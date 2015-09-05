@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<RadioGroup
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="16dp"
+		android:orientation="vertical">
+
+		<RadioButton
+			android:id="@+id/form_typeOne_a"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Atende"/>
+
+		<RadioButton
+			android:id="@+id/form_typeOne_na"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Não atende"/>
+
+		<RadioButton
+			android:id="@+id/form_typeOne_nsa"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Não se aplica"/>
+	</RadioGroup>
+</ScrollView>

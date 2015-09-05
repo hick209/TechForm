@@ -1,0 +1,113 @@
+/form/
+{
+	"forms": [
+		{
+			"code": 1,
+			"codeName": "A",
+			"name": "Vistoria de áreas internas",
+			"sections": [
+				{
+					"code": 1,
+					"name": "Paredes/Painéis de Vedação",
+					"questions": [
+						{
+							"code": 1,
+							"type": 1,
+							"text": "As fissuras existentes são menores ou iguais aos valores máximos estipulados para o sistema aplicado",
+							"observation": "Indicar as medidas das fissuras",
+							"hint": "Usar fissurômetro"
+						},
+						{
+							"code": 2,
+							"type": 1,
+							"text": "Paredes sem deformações e desaprumos e em conformidade com as normas pertinentes"
+						},
+						{
+							"code": 3,
+							"type": 1,
+							"text": "Paredes sem sinais de infiltração e manchas"
+						},
+						{
+							"code": 4,
+							"type": 1,
+							"text": "Ortogonalidade de cantos",
+							"hint": "Usar esquadro"
+						},
+						{
+							"code": 5,
+							"type": 2,
+							"text": "Estado de conservação"
+						}
+					]
+				},
+				{
+					"code": 2,
+					"name": "Estruturas",
+					"questions": [
+					]
+				},
+				{
+					"code": 3,
+					"name": "Pintura",
+					"questions": [
+					]
+				}
+			]
+		},
+		{
+			"code": 2,
+			"codeName": "B",
+			"name": "Vistoria de áreas externas",
+			"sections": [
+				{
+					"code": 1,
+					"name": "Cobertura",
+					"questions": [
+					]
+				}
+			]
+		}
+	]
+}
+
+// Depois de preenchido
+//  -> Dados adicionais
+
+{
+	"name": "...",
+	"fill_date": {
+		"start": "yyyy-MM-dd",
+		"end": "yyyy-MM-dd",
+	},
+	"id": "?", 
+	"construction_company": "?",
+	"team": "?",
+	"site": {
+		"address": "...",
+		"number": 123,
+		"complement": "",
+		"zipcode": "12345-789",
+		"city": "...",
+		"state": "...",
+		"country": "..."
+	}
+	"forms": [
+		{
+			"code": 1,
+			"sections": [
+				{
+					"code": 1,
+					"questions": [
+						{
+							"notes": "...",
+							"images":[
+								"path/to/image1.png",
+								"path/to/image2.jpg"
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

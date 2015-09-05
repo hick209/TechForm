@@ -1,0 +1,115 @@
+/*
+   For step-by-step instructions on connecting your Android application to this backend module,
+   see "App Engine Java Endpoints Module" template documentation at
+   https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/HelloEndpoints
+*/
+
+package info.nivaldobondanca.backend.techform.endpoint;
+
+import com.google.api.server.spi.config.Api;
+import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiNamespace;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.inject.Named;
+
+import info.nivaldobondanca.backend.techform.Startup;
+import info.nivaldobondanca.backend.techform.model.Form;
+import info.nivaldobondanca.backend.techform.model.Group;
+
+import static com.google.api.client.repackaged.com.google.common.base.Objects.firstNonNull;
+
+/**
+ * An endpoint class we are exposing
+ */
+@Api(
+		name = "techFormAPI",
+		version = "v0.1",
+		namespace = @ApiNamespace(
+				ownerDomain = "techform.backend.nivaldobondanca.info",
+				ownerName = "techform.backend.nivaldobondanca.info",
+				packagePath = ""
+		)
+)
+public class TechFormEndpoint {
+
+	private static final Logger logger = Logger.getLogger(TechFormEndpoint.class.getName());
+
+	private DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+
+	@ApiMethod(name = "group.list")
+	public List<Group> getGroups() throws EntityNotFoundException {
+		Key rootKey = KeyFactory.createKey("Root", 1);
+		// Get or create the root
+		Entity root;
+		try {
+			root = dataStore.get(rootKey);
+		} catch (EntityNotFoundException e) {
+			root = new Startup(dataStore).jumpStart();
+		}
+
+		//noinspection unchecked
+		List<Key> keys = (List<Key>) root.getProperty("groups");
+		keys = firstNonNull(keys, Collections.<Key>emptyList());
+
+		List<Group> groups = new ArrayList<>();
+		for (Key key : keys) {
+			Group g = Group.fromEntity(dataStore.get(key));
+			groups.add(g);
+		}
+
+		return groups;
+	}
+
+	@ApiMethod(name = "form.list")
+	public List<Form> getForms(
+			@Named("groupId") Long groupId)
+			throws EntityNotFoundException {
+
+		// Get the key
+		Key rootKey = KeyFactory.createKey("Root", 1);
+		Key groupKey = KeyFactory.createKey(rootKey, "Group", groupId);
+
+		// Get or create the group
+		Entity group;
+		group = dataStore.get(groupKey);
+
+		//noinspection unchecked
+		List<Key> keys = (List<Key>) group.getProperty("forms");
+		keys = firstNonNull(keys, Collections.<Key>emptyList());
+
+		List<Form> forms = new ArrayList<>();
+		for (Key key : keys) {
+			Form f = Form.fromEntity(dataStore, dataStore.get(key));
+			forms.add(f);
+		}
+
+		return forms;
+	}
+
+	@ApiMethod(name = "form.get")
+	public Form getForm(
+			@Named("groupId") Long groupId,
+			@Named("formId") Long formId)
+			throws EntityNotFoundException {
+
+		// Get the key
+		Key rootKey = KeyFactory.createKey("Root", 1);
+		Key groupKey = KeyFactory.createKey(rootKey, "Group", groupId);
+		Key key = KeyFactory.createKey(groupKey, "Form", formId);
+
+		Entity entity = dataStore.get(key);
+
+		return Form.fromEntity(dataStore, entity);
+	}
+}

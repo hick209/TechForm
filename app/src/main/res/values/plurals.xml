@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<plurals name="question">
+		<item quantity="other">questão</item>
+		<item quantity="zero">questão</item>
+		<item quantity="one">questão</item>
+		<item quantity="many">questões</item>
+	</plurals>
+</resources>

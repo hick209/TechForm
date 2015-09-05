@@ -1,0 +1,18 @@
+<resources>
+
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+		<!-- App Colors-->
+		<item name="colorPrimary">@color/app_primary</item>
+		<item name="colorPrimaryDark">@color/app_primary_dark</item>
+		<item name="colorAccent">@color/app_accent</item>
+
+		<!-- Ripple -->
+		<item name="colorControlHighlight">@color/app_primary_light</item>
+		<!-- EditText underline unfocused -->
+		<!-- Checkbox unchecked -->
+		<!-- Spinner indicator (not pressed) -->
+		<item name="colorControlNormal">@color/app_primary_light</item>
+	</style>
+
+</resources>

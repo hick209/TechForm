@@ -1,0 +1,14 @@
+<resources>
+	<!-- App -->
+	<string name="app_name">Inovatec M45</string>
+
+	<!-- Action Bar -->
+	<string name="action_update">Atualizar</string>
+
+	<!-- Action -->
+	<string name="action_form_fillUp">Preencher</string>
+
+	<!-- Empty -->
+	<string name="empty_groups">Nenhum grupo cadastrado</string>
+
+</resources>
