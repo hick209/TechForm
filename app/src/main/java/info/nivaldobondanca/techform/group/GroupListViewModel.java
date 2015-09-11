@@ -4,8 +4,8 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.ColorRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 
 import info.nivaldobondanca.techform.BR;
 import info.nivaldobondanca.techform.R;
@@ -54,7 +54,7 @@ public class GroupListViewModel extends BaseObservable {
 		return mActivity;
 	}
 
-	public Adapter getAdapter() {
+	public ListAdapter getAdapter() {
 		return mActivity.getAdapter();
 	}
 

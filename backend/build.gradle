@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.24'
     }
 }
 
@@ -22,9 +22,9 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
-    compile 'com.google.appengine:appengine-endpoints:1.9.18'
-    compile 'com.google.appengine:appengine-endpoints-deps:1.9.18'
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.24'
+    compile 'com.google.appengine:appengine-endpoints:1.9.24'
+    compile 'com.google.appengine:appengine-endpoints-deps:1.9.24'
     compile 'com.google.appengine.tools:appengine-gcs-client:0.4.4'
     compile 'javax.servlet:servlet-api:2.5'
 }

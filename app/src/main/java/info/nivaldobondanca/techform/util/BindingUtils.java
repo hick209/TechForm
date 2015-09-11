@@ -15,34 +15,34 @@ import android.widget.ViewAnimator;
 public class BindingUtils {
 
 	@BindingAdapter("adapter")
-	public void setAdapter(ListView view, ListAdapter adapter) {
+	public static void setAdapter(ListView view, ListAdapter adapter) {
 		view.setAdapter(adapter);
 	}
 
 	@BindingAdapter("onItemClick")
-	public <T extends Adapter> void setOnItemClickListener(AdapterView<T> view,
+	public static void setOnItemClickListener(ListView view,
 			AdapterView.OnItemClickListener l) {
 		view.setOnItemClickListener(l);
 	}
 
 	@BindingAdapter("displayChild")
-	public void setDisplayChild(ViewAnimator view, int child) {
+	public static void setDisplayChild(ViewAnimator view, int child) {
 		view.setDisplayedChild(child);
 	}
 
 	@BindingAdapter("refreshing")
-	public void setRefreshing(SwipeRefreshLayout view, boolean refreshing) {
+	public static void setRefreshing(SwipeRefreshLayout view, boolean refreshing) {
 		view.setRefreshing(refreshing);
 	}
 
 	@BindingAdapter("onRefresh")
-	public void setOnRefreshListener(SwipeRefreshLayout view,
+	public static void setOnRefreshListener(SwipeRefreshLayout view,
 			SwipeRefreshLayout.OnRefreshListener l) {
 		view.setOnRefreshListener(l);
 	}
 
 	@BindingAdapter("colorScheme")
-	public void setRefreshLayoutColorScheme(SwipeRefreshLayout view, @ColorRes int[] colors) {
+	public static void setRefreshLayoutColorScheme(SwipeRefreshLayout view, @ColorRes int[] colors) {
 		view.setColorSchemeResources(colors);
 	}
 }
