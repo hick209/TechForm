@@ -7,7 +7,6 @@ import com.google.appengine.repackaged.org.codehaus.jackson.JsonNode;
 import com.google.appengine.repackaged.org.codehaus.jackson.map.ObjectMapper;
 import com.google.appengine.repackaged.org.codehaus.jackson.node.ArrayNode;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,20 +15,17 @@ import java.util.List;
  */
 public class NewData {
 
+	private static final ObjectMapper MAPPER = new ObjectMapper();
+
 	private final DatastoreService mDataStore;
 	private final JsonNode         mJsonNode;
 
-	public NewData(DatastoreService dataStore) {
-		mDataStore = dataStore;
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mJsonNode = mapper.readTree(getClass().getResourceAsStream("/startup.json"));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	public NewData(DatastoreService dataStore, JsonNode json) {
+		this.mDataStore = dataStore;
+		this.mJsonNode = json;
 	}
 
-	public Entity jumpStart() {
+	public Entity run() {
 		Entity root = new Entity("Root", 1);
 
 		ArrayNode nodes = (ArrayNode) mJsonNode.get("groups");
@@ -156,4 +152,7 @@ public class NewData {
 		return mDataStore.put(entity);
 	}
 
+	public static ObjectMapper mapper() {
+		return MAPPER;
+	}
 }

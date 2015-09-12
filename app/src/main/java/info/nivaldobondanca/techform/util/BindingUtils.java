@@ -3,7 +3,6 @@ package info.nivaldobondanca.techform.util;
 import android.databinding.BindingAdapter;
 import android.support.annotation.ColorRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;

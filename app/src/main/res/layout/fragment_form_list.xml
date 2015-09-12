@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView
+<layout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@android:id/list"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:paddingLeft="@dimen/activity_horizontal_margin"
-	android:paddingRight="@dimen/activity_horizontal_margin"
-	android:paddingTop="@dimen/activity_vertical_margin"
-	android:paddingBottom="@dimen/activity_vertical_margin"
-	android:divider="@null"
-	android:dividerHeight="8dp"
-	android:drawSelectorOnTop="true"
-	android:clipToPadding="false"/>
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<data>
+		<import type="info.nivaldobondanca.techform.form.FormListViewModel"/>
+		<import type="android.view.View"/>
+
+		<variable name="viewModel" type="FormListViewModel"/>
+	</data>
+
+	<ViewSwitcher
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:displayChild="@{viewModel.firstTimeLoading ? 1 : 0}">
+
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:text="@string/empty_forms"
+				android:visibility="@{viewModel.empty ? View.VISIBLE : View.GONE}"
+				style="@style/List.Empty"/>
+
+			<android.support.v4.widget.SwipeRefreshLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:colorScheme="@{viewModel.refreshLayoutColors}"
+				app:refreshing="@{viewModel.loading}"
+				app:onRefresh="@{viewModel.refreshListener}">
+
+				<ListView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:divider="@null"
+					android:dividerHeight="8dp"
+					android:drawSelectorOnTop="true"
+					app:adapter="@{viewModel.adapter}"
+					app:onItemClick="@{viewModel.itemClickListener}"
+					style="@style/List"/>
+			</android.support.v4.widget.SwipeRefreshLayout>
+		</FrameLayout>
+
+		<ProgressBar
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			style="?android:attr/progressBarStyleLarge"/>
+	</ViewSwitcher>
+
+
+</layout>
+

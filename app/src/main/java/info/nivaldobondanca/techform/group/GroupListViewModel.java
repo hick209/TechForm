@@ -1,63 +1,34 @@
 package info.nivaldobondanca.techform.group;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.support.annotation.ColorRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 
-import info.nivaldobondanca.techform.BR;
-import info.nivaldobondanca.techform.R;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
+import info.nivaldobondanca.techform.ListViewModel;
+import info.nivaldobondanca.techform.widget.BasicListAdapter;
 
 /**
  * @author Nivaldo Bondança
  */
-public class GroupListViewModel extends BaseObservable {
+public class GroupListViewModel extends ListViewModel {
 
-	private boolean           mLoading;
-	private boolean           mFirstTimeLoading = true;
 	private GroupListActivity mActivity;
-	private @ColorRes int[]   mRefreshLayoutColors = {
-			R.color.app_primary,
-			R.color.app_primary_light,
-			R.color.app_accent,
-			R.color.app_primary_dark
-	};
 
 	public GroupListViewModel(GroupListActivity activity) {
 		this.mActivity = activity;
 	}
 
-	@Bindable
-	public boolean isLoading() {
-		return mLoading;
-	}
-
-	@Bindable
-	public boolean isFirstTimeLoading() {
-		return mFirstTimeLoading;
-	}
-
-	public void setLoading(boolean loading) {
-		this.mLoading = loading;
-		this.mFirstTimeLoading = loading && mFirstTimeLoading;
-		notifyPropertyChanged(BR.loading);
-		notifyPropertyChanged(BR.firstTimeLoading);
-	}
-
-	public int[] getRefreshLayoutColors() {
-		return mRefreshLayoutColors;
-	}
-
+	@Override
 	public SwipeRefreshLayout.OnRefreshListener getRefreshListener() {
 		return mActivity;
 	}
 
-	public ListAdapter getAdapter() {
+	@Override
+	public BasicListAdapter<Group> getAdapter() {
 		return mActivity.getAdapter();
 	}
 
+	@Override
 	public AdapterView.OnItemClickListener getItemClickListener() {
 		return mActivity;
 	}

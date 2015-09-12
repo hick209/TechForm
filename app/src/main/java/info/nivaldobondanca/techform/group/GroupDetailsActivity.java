@@ -2,13 +2,13 @@ package info.nivaldobondanca.techform.group;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import java.io.IOException;
@@ -22,11 +22,12 @@ import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 import info.nivaldobondanca.techform.R;
-import info.nivaldobondanca.techform.form.FormListFragment;
-import info.nivaldobondanca.techform.form.FormSummaryFragment;
 import info.nivaldobondanca.techform.content.ApiCall;
 import info.nivaldobondanca.techform.content.ApiLoader;
 import info.nivaldobondanca.techform.content.FormContentObserver;
+import info.nivaldobondanca.techform.databinding.ActivityGroupDetailsBinding;
+import info.nivaldobondanca.techform.form.FormListFragment;
+import info.nivaldobondanca.techform.form.FormSummaryFragment;
 import info.nivaldobondanca.techform.util.Utils;
 
 /**
@@ -62,7 +63,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements SwipeRefr
 		mGroup.setId(getIntent().getLongExtra(EXTRA_GROUP_ID, -1));
 		mGroup.setName(getIntent().getStringExtra(EXTRA_GROUP_NAME));
 
-		setContentView(R.layout.activity_group_details);
+		ActivityGroupDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_group_details);
+		binding.setViewModel(this);
+
 		Utils.setupToolbar(this);
 
 		mLoaderCallback = new FormsLoaderCallback();

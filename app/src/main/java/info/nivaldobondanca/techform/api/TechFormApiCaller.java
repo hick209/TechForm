@@ -1,17 +1,9 @@
 package info.nivaldobondanca.techform.api;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Pair;
-import android.widget.Toast;
-
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 
-import java.io.IOException;
-
 import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;
-import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 
 /**
  * @author Nivaldo Bondança

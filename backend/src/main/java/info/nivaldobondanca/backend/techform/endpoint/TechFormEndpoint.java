@@ -15,7 +15,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.repackaged.org.codehaus.jackson.JsonNode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.logging.Logger;
 
 import javax.inject.Named;
 
+import info.nivaldobondanca.backend.techform.NewData;
 import info.nivaldobondanca.backend.techform.Startup;
 import info.nivaldobondanca.backend.techform.model.Form;
 import info.nivaldobondanca.backend.techform.model.Group;
@@ -48,14 +51,14 @@ public class TechFormEndpoint {
 	private DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 
 	@ApiMethod(name = "group.list")
-	public List<Group> getGroups() throws EntityNotFoundException {
+	public List<Group> getGroups() throws EntityNotFoundException, IOException {
 		Key rootKey = KeyFactory.createKey("Root", 1);
 		// Get or create the root
 		Entity root;
 		try {
 			root = dataStore.get(rootKey);
 		} catch (EntityNotFoundException e) {
-			root = new Startup(dataStore).jumpStart();
+			root = new Startup(dataStore).run();
 		}
 
 		//noinspection unchecked
@@ -95,6 +98,32 @@ public class TechFormEndpoint {
 		}
 
 		return forms;
+	}
+
+	@ApiMethod(name = "group.save")
+	public void setGroupForms(
+			@Named("groupId") Long groupId,
+			@Named("data") String data)
+			throws EntityNotFoundException, IOException {
+
+		// Get the key
+		Key rootKey = KeyFactory.createKey("Root", 1);
+		Key groupKey = KeyFactory.createKey(rootKey, "Group", groupId);
+
+		// Get or create the group
+		Entity group;
+		group = dataStore.get(groupKey);
+
+		//noinspection unchecked
+		List<Key> keys = (List<Key>) group.getProperty("forms");
+		keys = firstNonNull(keys, Collections.<Key>emptyList());
+		// Erase all the previous data
+		dataStore.delete(keys);
+
+		// Saves the new data
+		JsonNode json = NewData.mapper().readTree(data);
+		NewData newData = new NewData(dataStore, json);
+		newData.run();
 	}
 
 	@ApiMethod(name = "form.get")
