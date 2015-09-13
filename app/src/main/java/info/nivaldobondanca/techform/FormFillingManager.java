@@ -49,7 +49,6 @@ public class FormFillingManager implements Parcelable {
 			JSONObject json = new JSONObject(jsonString);
 
 			form.setName(json.optString("name"));
-			form.setCode(json.optLong("code"));
 			form.setCodeName(json.optString("codeName"));
 
 			JSONArray sectionArray = json.getJSONArray("sections");
@@ -70,7 +69,6 @@ public class FormFillingManager implements Parcelable {
 			FormSection item = new FormSection();
 
 			item.setName(json.optString("name"));
-			item.setCode(json.optLong("code"));
 			item.setCodeName(json.optString("codeName"));
 
 			JSONArray questionsArray = json.getJSONArray("questions");
@@ -89,7 +87,6 @@ public class FormFillingManager implements Parcelable {
 			JSONObject json = questionsArray.getJSONObject(i);
 			FormQuestion item = new FormQuestion();
 
-			item.setCode(json.optLong("code"));
 			item.setCodeName(json.optString("codeName"));
 			item.setType(json.optInt("type"));
 			item.setText(json.optString("text"));

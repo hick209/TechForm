@@ -108,7 +108,7 @@ public class FormSummaryFragment extends Fragment implements FormContentObserver
 
 		@Override
 		protected void bindView(View view, FormSection item) {
-			String code = firstNonNull(item.getCodeName(), String.valueOf(item.getCode()));
+			String code = item.getCodeName();
 			((TextView) view.findViewById(R.id.section_code)).setText(code);
 
 			((TextView) view.findViewById(R.id.section_name)).setText(item.getName());

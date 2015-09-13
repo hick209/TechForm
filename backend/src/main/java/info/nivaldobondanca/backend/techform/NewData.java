@@ -25,15 +25,23 @@ public class NewData {
 		this.mJsonNode = json;
 	}
 
-	public Entity run() {
+	public Entity run(boolean singleGroup) {
 		Entity root = new Entity("Root", 1);
 
-		ArrayNode nodes = (ArrayNode) mJsonNode.get("groups");
-		List<Key> keys = new ArrayList<>(nodes.size());
-
-		for (JsonNode node : nodes) {
-			Key k = processGroup(root.getKey(), node);
+		List<Key> keys;
+		if (singleGroup) {
+			keys = new ArrayList<>(1);
+			Key k = processGroup(root.getKey(), mJsonNode);
 			keys.add(k);
+		}
+		else {
+			ArrayNode nodes = (ArrayNode) mJsonNode.get("groups");
+			keys = new ArrayList<>(nodes.size());
+
+			for (JsonNode node : nodes) {
+				Key k = processGroup(root.getKey(), node);
+				keys.add(k);
+			}
 		}
 
 		root.setProperty("groups", keys);
@@ -44,7 +52,8 @@ public class NewData {
 	}
 
 	protected Key processGroup(Key parent, JsonNode json) {
-		Entity entity = new Entity("Group", parent);
+		long id = json.get("id").asLong();
+		Entity entity = new Entity("Group", id, parent);
 
 		String name = json.get("name").asText();
 		entity.setProperty("name", name);
@@ -72,9 +81,6 @@ public class NewData {
 		String name = json.get("name").asText();
 		entity.setProperty("name", name);
 
-		long code = json.get("code").asLong();
-		entity.setProperty("code", code);
-
 		String codeName = json.get("codeName").asText();
 		entity.setProperty("codeName", codeName);
 
@@ -100,9 +106,6 @@ public class NewData {
 
 		String name = json.get("name").asText();
 		entity.setProperty("name", name);
-
-		long code = json.get("code").asLong();
-		entity.setProperty("code", code);
 
 		String codeName = json.get("codeName").asText();
 		entity.setProperty("codeName", codeName);
@@ -142,9 +145,6 @@ public class NewData {
 			String hint = json.get("hint").asText();
 			entity.setProperty("hint", hint);
 		}
-
-		long code = json.get("code").asLong();
-		entity.setProperty("code", code);
 
 		String codeName = json.get("codeName").asText();
 		entity.setProperty("codeName", codeName);

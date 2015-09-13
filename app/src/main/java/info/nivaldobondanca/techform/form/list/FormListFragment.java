@@ -20,8 +20,6 @@ import info.nivaldobondanca.techform.databinding.FragmentFormListBinding;
 import info.nivaldobondanca.techform.group.details.GroupDetailsActivity;
 import info.nivaldobondanca.techform.widget.BasicListAdapter;
 
-import static com.google.common.base.Objects.firstNonNull;
-
 /**
  * @author Nivaldo Bondança
  */
@@ -107,8 +105,7 @@ public class FormListFragment extends Fragment implements FormContentObserver,
 
 		@Override
 		protected void bindView(View view, Form item) {
-			String code = firstNonNull(item.getCodeName(), String.valueOf(item.getCode()));
-			((TextView) view.findViewById(R.id.form_code)).setText(code);
+			((TextView) view.findViewById(R.id.form_code)).setText(item.getCodeName());
 
 			((TextView) view.findViewById(R.id.form_name)).setText(item.getName());
 		}

@@ -1,8 +1,17 @@
 package info.nivaldobondanca.techform.group.list;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +21,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +40,9 @@ import info.nivaldobondanca.techform.R;
 import info.nivaldobondanca.techform.content.ApiCall;
 import info.nivaldobondanca.techform.content.ListLoaderCallback;
 import info.nivaldobondanca.techform.databinding.ActivityGroupListBinding;
+import info.nivaldobondanca.techform.group.Uploader;
 import info.nivaldobondanca.techform.group.details.GroupDetailsActivity;
+import info.nivaldobondanca.techform.util.ParseUtils;
 import info.nivaldobondanca.techform.util.Utils;
 import info.nivaldobondanca.techform.widget.BasicListAdapter;
 
@@ -35,10 +54,17 @@ public class GroupListActivity extends AppCompatActivity
 
 	private static final String LOG_TAG = GroupListActivity.class.getSimpleName();
 
+	private static final int REQUEST_PERMISSION = 0;
+	private static final int REQUEST_FILE       = 1;
+
+	private static final int LOADER_DOWNLOAD = 0;
+	private static final int LOADER_UPLOAD   = 1;
+
 	private GroupAdapter              mAdapter;
 	private ListLoaderCallback<Group> mLoaderCallback;
 
-	private GroupListViewModel mViewModel;
+	private GroupListViewModel       mViewModel;
+	private ActivityGroupListBinding mBinding;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +74,8 @@ public class GroupListActivity extends AppCompatActivity
 		mAdapter = new GroupAdapter();
 		mLoaderCallback = new GroupsLoaderCallback();
 
-		ActivityGroupListBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_group_list);
-		binding.setViewModel(mViewModel);
+		mBinding = DataBindingUtil.setContentView(this, R.layout.activity_group_list);
+		mBinding.setViewModel(mViewModel);
 
 		Utils.setupToolbar(this);
 	}
@@ -57,7 +83,7 @@ public class GroupListActivity extends AppCompatActivity
 	@Override
 	protected void onStart() {
 		super.onStart();
-		getSupportLoaderManager().initLoader(0, null, mLoaderCallback);
+		getSupportLoaderManager().initLoader(LOADER_DOWNLOAD, null, mLoaderCallback);
 	}
 
 	@Override
@@ -70,15 +96,52 @@ public class GroupListActivity extends AppCompatActivity
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_uploadData:
-				// TODO
+				Log.v(LOG_TAG, "Requesting file to upload");
+				showFileChooser();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
+			String path = data.getData().getPath();
+			File file = new File(path);
+
+			try {
+				String fileContent = Files.toString(file, Charsets.UTF_8);
+
+				JSONObject json = new JSONObject(fileContent);
+
+				Log.i(LOG_TAG, "Checking JSON validity.");
+				Log.v(LOG_TAG, json.toString(2));
+
+				String jsonData = json.toString();
+				Group g = ParseUtils.parseGroupJSON(jsonData);
+
+				// JSON is valid!
+				// Send it!
+				Log.i(LOG_TAG, "Sending data");
+				UploaderCallback uploader = new UploaderCallback(g.getId(), jsonData);
+				getSupportLoaderManager().initLoader(LOADER_UPLOAD, null, uploader);
+			}
+			catch (JSONException e) {
+				Toast.makeText(this, R.string.message_badFileFormat, Toast.LENGTH_LONG).show();
+				Log.e(LOG_TAG, "JSON error", e);
+			}
+			catch (IOException e) {
+				Toast.makeText(this, R.string.message_ioError, Toast.LENGTH_LONG).show();
+				Log.e(LOG_TAG, "IO error", e);
+			}
+		}
+	}
+
+	@Override
 	public void onRefresh() {
-		getSupportLoaderManager().restartLoader(0, null, mLoaderCallback);
+		getSupportLoaderManager().restartLoader(LOADER_DOWNLOAD, null, mLoaderCallback);
 	}
 
 	@Override
@@ -87,8 +150,48 @@ public class GroupListActivity extends AppCompatActivity
 		startActivity(GroupDetailsActivity.newInstance(this, group.getId(), group.getName()));
 	}
 
+	private void showFileChooser() {
+
+		if (!getPermission()) return;
+
+		// Create the intent
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("text/*");
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent = Intent.createChooser(intent, getString(R.string.action_chooseUploadFile));
+
+		try {
+			startActivityForResult(intent, REQUEST_FILE);
+		}
+		catch (ActivityNotFoundException e) {
+			Log.w(LOG_TAG, "No file chooser found", e);
+			Toast.makeText(this, R.string.message_noFileChooser, Toast.LENGTH_LONG).show();
+		}
+	}
+
 	public BasicListAdapter<Group> getAdapter() {
 		return mAdapter;
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	public boolean getPermission() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+
+		if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == REQUEST_PERMISSION) {
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				showFileChooser();
+			}
+		}
 	}
 
 	private class GroupAdapter extends BasicListAdapter<Group> {
@@ -153,6 +256,32 @@ public class GroupListActivity extends AppCompatActivity
 				e.printStackTrace();
 			}
 			return groups;
+		}
+	}
+
+	private class UploaderCallback implements LoaderManager.LoaderCallbacks<Boolean> {
+
+		private final long   mGroupId;
+		private final String mData;
+
+		public UploaderCallback(long groupId, String data) {
+			mGroupId = groupId;
+			mData = data;
+		}
+
+		@Override
+		public Loader<Boolean> onCreateLoader(int id, Bundle args) {
+			return new Uploader(GroupListActivity.this, mGroupId, mData);
+		}
+
+		@Override
+		public void onLoadFinished(Loader<Boolean> loader, Boolean result) {
+			int message = result ? R.string.message_fileUploaded : R.string.message_errorOnFileUploaded;
+			Snackbar.make(mBinding.coordinator, message, Snackbar.LENGTH_LONG).show();
+		}
+
+		@Override
+		public void onLoaderReset(Loader<Boolean> loader) {
 		}
 	}
 }

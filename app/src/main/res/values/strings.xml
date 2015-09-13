@@ -9,10 +9,18 @@
 
 	<!-- Action -->
 	<string name="action_form_fillUp">Preencher</string>
+	<string name="action_chooseUploadFile">Escolhe o arquivo JSON</string>
 
 	<!-- Empty -->
 	<string name="empty_form">Formulário vazio</string>
 	<string name="empty_forms">Nenhum formulário cadastrado</string>
 	<string name="empty_groups">Nenhum grupo cadastrado</string>
+
+	<!-- Message -->
+	<string name="message_noFileChooser">Primeiro instale um gerenciador de arquivos.</string>
+	<string name="message_ioError">Erro, verifique sua conexão.</string>
+	<string name="message_badFileFormat">JSON não corresponde ao esperado.</string>
+	<string name="message_fileUploaded">Arquivo enviado com sucesso!</string>
+	<string name="message_errorOnFileUploaded">Erro no envio do arquivo.</string>
 
 </resources>

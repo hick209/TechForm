@@ -22,8 +22,6 @@ import info.nivaldobondanca.techform.R;
 import info.nivaldobondanca.techform.util.ParseUtils;
 import info.nivaldobondanca.techform.util.Utils;
 
-import static com.google.common.base.Objects.firstNonNull;
-
 /**
  * @author Nivaldo Bondança
  */
@@ -70,15 +68,19 @@ public class SectionQuestionsActivity extends AppCompatActivity implements View.
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
 		tabLayout.setupWithViewPager(mViewPager);
+		findViewById(R.id.pager).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(SectionQuestionsActivity.this, info.nivaldobondanca.techform.group.details.GroupDetailsActivity.class));
+			}
+		});
 	}
 
 	private String getSectionCode(Form form, int section) {
 		FormSection formSection = form.getSections().get(section);
 
-		String formCode = firstNonNull(form.getCodeName(),
-				String.valueOf(form.getCode()));
-		String sectionCode = firstNonNull(formSection.getCodeName(),
-				String.valueOf(formSection.getCode()));
+		String formCode = form.getCodeName();
+		String sectionCode = formSection.getCodeName();
 
 		return formCode + "." + sectionCode;
 	}
@@ -120,7 +122,7 @@ public class SectionQuestionsActivity extends AppCompatActivity implements View.
 		@Override
 		public CharSequence getPageTitle(int position) {
 			FormQuestion question = mQuestions.get(position);
-			return mTitlePrefix + firstNonNull(question.getCodeName(), String.valueOf(question.getCode()));
+			return mTitlePrefix + question.getCodeName();
 		}
 
 		@Override

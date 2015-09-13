@@ -9,7 +9,6 @@ import com.google.appengine.api.datastore.Entity;
 public class FormQuestion {
 
 	private long   mId;
-	private long   mCode;
 	private String mCodeName;
 	private int    mType;
 	private String mText;
@@ -22,14 +21,6 @@ public class FormQuestion {
 
 	public void setId(long id) {
 		mId = id;
-	}
-
-	public long getCode() {
-		return mCode;
-	}
-
-	public void setCode(long code) {
-		mCode = code;
 	}
 
 	public String getCodeName() {
@@ -77,9 +68,6 @@ public class FormQuestion {
 
 		long id = entity.getKey().getId();
 		question.setId(id);
-
-		long code = (long) entity.getProperty("code");
-		question.setCode(code);
 
 		String codeName = (String) entity.getProperty("codeName");
 		question.setCodeName(codeName);

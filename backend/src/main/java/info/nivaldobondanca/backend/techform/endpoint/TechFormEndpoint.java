@@ -58,7 +58,7 @@ public class TechFormEndpoint {
 		try {
 			root = dataStore.get(rootKey);
 		} catch (EntityNotFoundException e) {
-			root = new Startup(dataStore).run();
+			root = new Startup(dataStore).run(false);
 		}
 
 		//noinspection unchecked
@@ -112,18 +112,23 @@ public class TechFormEndpoint {
 
 		// Get or create the group
 		Entity group;
-		group = dataStore.get(groupKey);
+		try {
+			group = dataStore.get(groupKey);
 
-		//noinspection unchecked
-		List<Key> keys = (List<Key>) group.getProperty("forms");
-		keys = firstNonNull(keys, Collections.<Key>emptyList());
-		// Erase all the previous data
-		dataStore.delete(keys);
+			//noinspection unchecked
+			List<Key> keys = (List<Key>) group.getProperty("forms");
+			keys = firstNonNull(keys, Collections.<Key>emptyList());
+			// Erase all the previous data
+			dataStore.delete(keys);
+		}
+		catch (EntityNotFoundException e) {
+			logger.fine("Creating new group");
+		}
 
 		// Saves the new data
 		JsonNode json = NewData.mapper().readTree(data);
 		NewData newData = new NewData(dataStore, json);
-		newData.run();
+		newData.run(true);
 	}
 
 	@ApiMethod(name = "form.get")

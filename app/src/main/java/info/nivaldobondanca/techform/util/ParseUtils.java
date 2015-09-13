@@ -10,18 +10,34 @@ import java.util.List;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
 /**
  * @author Nivaldo Bondança
  */
 public class ParseUtils {
 
+	public static Group parseGroupJSON(String jsonString) throws JSONException {
+		Group data = new Group();
+
+		JSONObject json = new JSONObject(jsonString);
+		data.setId(json.getLong("id"));
+		data.setName(json.getString("name"));
+
+		JSONArray forms = json.getJSONArray("forms");
+		for (int i = 0; i < forms.length(); i++) {
+			// Just check the forms validity
+			parseFormJSON(forms.getJSONObject(i).toString());
+		}
+
+		return data;
+	}
+
 	public static Form parseFormJSON(String jsonString) throws JSONException {
 		Form data = new Form();
 
 		JSONObject json = new JSONObject(jsonString);
 		data.setId(json.getLong("id"));
-		data.setCode(json.getLong("code"));
 		data.setCodeName(json.getString("codeName"));
 		data.setName(json.getString("name"));
 
@@ -41,7 +57,6 @@ public class ParseUtils {
 
 		JSONObject json = new JSONObject(jsonString);
 		data.setId(json.getLong("id"));
-		data.setCode(json.getLong("code"));
 		data.setCodeName(json.getString("codeName"));
 		data.setName(json.getString("name"));
 
@@ -61,7 +76,6 @@ public class ParseUtils {
 
 		JSONObject json = new JSONObject(jsonString);
 		data.setId(json.getLong("id"));
-		data.setCode(json.getLong("code"));
 		data.setCodeName(json.optString("codeName"));
 		data.setText(json.getString("text"));
 		data.setType(json.getInt("type"));

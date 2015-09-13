@@ -17,7 +17,6 @@ import static com.google.api.client.repackaged.com.google.common.base.Objects.fi
 public class Form {
 
 	private long   mId;
-	private long   mCode;
 	private String mCodeName;
 	private String mName;
 
@@ -29,14 +28,6 @@ public class Form {
 
 	public void setId(long id) {
 		mId = id;
-	}
-
-	public long getCode() {
-		return mCode;
-	}
-
-	public void setCode(long code) {
-		mCode = code;
 	}
 
 	public String getCodeName() {
@@ -69,9 +60,6 @@ public class Form {
 
 		long id = entity.getKey().getId();
 		form.setId(id);
-
-		long code = (long) entity.getProperty("code");
-		form.setCode(code);
 
 		String codeName = (String) entity.getProperty("codeName");
 		form.setCodeName(codeName);
