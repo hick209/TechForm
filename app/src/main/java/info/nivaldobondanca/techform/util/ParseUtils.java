@@ -37,7 +37,7 @@ public class ParseUtils {
 		Form data = new Form();
 
 		JSONObject json = new JSONObject(jsonString);
-		data.setId(json.getLong("id"));
+		data.setId(json.optLong("id"));
 		data.setCodeName(json.getString("codeName"));
 		data.setName(json.getString("name"));
 
@@ -56,7 +56,7 @@ public class ParseUtils {
 		FormSection data = new FormSection();
 
 		JSONObject json = new JSONObject(jsonString);
-		data.setId(json.getLong("id"));
+		data.setId(json.optLong("id"));
 		data.setCodeName(json.getString("codeName"));
 		data.setName(json.getString("name"));
 
@@ -75,7 +75,7 @@ public class ParseUtils {
 		FormQuestion data = new FormQuestion();
 
 		JSONObject json = new JSONObject(jsonString);
-		data.setId(json.getLong("id"));
+		data.setId(json.optLong("id"));
 		data.setCodeName(json.optString("codeName"));
 		data.setText(json.getString("text"));
 		data.setType(json.getInt("type"));

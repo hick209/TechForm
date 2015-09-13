@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import javax.inject.Named;
 
 import info.nivaldobondanca.backend.techform.NewData;
-import info.nivaldobondanca.backend.techform.Startup;
 import info.nivaldobondanca.backend.techform.model.Form;
 import info.nivaldobondanca.backend.techform.model.Group;
 
@@ -58,7 +57,8 @@ public class TechFormEndpoint {
 		try {
 			root = dataStore.get(rootKey);
 		} catch (EntityNotFoundException e) {
-			root = new Startup(dataStore).run(false);
+//			root = new Startup(dataStore).run(false); // TODO
+			return Collections.emptyList();
 		}
 
 		//noinspection unchecked

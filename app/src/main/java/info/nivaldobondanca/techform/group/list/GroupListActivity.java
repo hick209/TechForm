@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +39,7 @@ import info.nivaldobondanca.techform.R;
 import info.nivaldobondanca.techform.content.ApiCall;
 import info.nivaldobondanca.techform.content.ListLoaderCallback;
 import info.nivaldobondanca.techform.databinding.ActivityGroupListBinding;
-import info.nivaldobondanca.techform.group.Uploader;
+import info.nivaldobondanca.techform.group.ApiCaller;
 import info.nivaldobondanca.techform.group.details.GroupDetailsActivity;
 import info.nivaldobondanca.techform.util.ParseUtils;
 import info.nivaldobondanca.techform.util.Utils;
@@ -56,9 +55,6 @@ public class GroupListActivity extends AppCompatActivity
 
 	private static final int REQUEST_PERMISSION = 0;
 	private static final int REQUEST_FILE       = 1;
-
-	private static final int LOADER_DOWNLOAD = 0;
-	private static final int LOADER_UPLOAD   = 1;
 
 	private GroupAdapter              mAdapter;
 	private ListLoaderCallback<Group> mLoaderCallback;
@@ -83,7 +79,7 @@ public class GroupListActivity extends AppCompatActivity
 	@Override
 	protected void onStart() {
 		super.onStart();
-		getSupportLoaderManager().initLoader(LOADER_DOWNLOAD, null, mLoaderCallback);
+		getSupportLoaderManager().initLoader(0, null, mLoaderCallback);
 	}
 
 	@Override
@@ -119,14 +115,28 @@ public class GroupListActivity extends AppCompatActivity
 				Log.i(LOG_TAG, "Checking JSON validity.");
 				Log.v(LOG_TAG, json.toString(2));
 
-				String jsonData = json.toString();
-				Group g = ParseUtils.parseGroupJSON(jsonData);
+				final String jsonData = json.toString();
+				final Group g = ParseUtils.parseGroupJSON(jsonData);
 
 				// JSON is valid!
 				// Send it!
 				Log.i(LOG_TAG, "Sending data");
-				UploaderCallback uploader = new UploaderCallback(g.getId(), jsonData);
-				getSupportLoaderManager().initLoader(LOADER_UPLOAD, null, uploader);
+				ApiCall<Boolean> apiCall = new ApiCall<Boolean>() {
+					@Override
+					public Boolean call(TechFormAPI api) {
+						try {
+							api.group().save(g.getId(), jsonData);
+							return true;
+						} catch (IOException e) {
+							Log.d(LOG_TAG, "Error while upload file", e);
+						}
+						return false;
+					}
+				};
+
+				Uploader uploader = new Uploader();
+				//noinspection unchecked
+				uploader.execute(apiCall);
 			}
 			catch (JSONException e) {
 				Toast.makeText(this, R.string.message_badFileFormat, Toast.LENGTH_LONG).show();
@@ -141,7 +151,7 @@ public class GroupListActivity extends AppCompatActivity
 
 	@Override
 	public void onRefresh() {
-		getSupportLoaderManager().restartLoader(LOADER_DOWNLOAD, null, mLoaderCallback);
+		getSupportLoaderManager().restartLoader(0, null, mLoaderCallback);
 	}
 
 	@Override
@@ -259,29 +269,20 @@ public class GroupListActivity extends AppCompatActivity
 		}
 	}
 
-	private class UploaderCallback implements LoaderManager.LoaderCallbacks<Boolean> {
-
-		private final long   mGroupId;
-		private final String mData;
-
-		public UploaderCallback(long groupId, String data) {
-			mGroupId = groupId;
-			mData = data;
-		}
-
+	private class Uploader extends ApiCaller<Boolean> {
 		@Override
-		public Loader<Boolean> onCreateLoader(int id, Bundle args) {
-			return new Uploader(GroupListActivity.this, mGroupId, mData);
-		}
+		protected void onPostExecute(Boolean result) {
+			try {
+				int message = result ? R.string.message_fileUploaded : R.string.message_errorOnFileUploaded;
+				Snackbar.make(mBinding.coordinator, message, Snackbar.LENGTH_LONG).show();
 
-		@Override
-		public void onLoadFinished(Loader<Boolean> loader, Boolean result) {
-			int message = result ? R.string.message_fileUploaded : R.string.message_errorOnFileUploaded;
-			Snackbar.make(mBinding.coordinator, message, Snackbar.LENGTH_LONG).show();
-		}
-
-		@Override
-		public void onLoaderReset(Loader<Boolean> loader) {
+				if (result) {
+					// Load new data
+					onRefresh();
+				}
+			}
+			catch (Exception ignored) {
+			}
 		}
 	}
 }
