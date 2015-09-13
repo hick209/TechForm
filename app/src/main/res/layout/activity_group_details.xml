@@ -5,7 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-		<import type="info.nivaldobondanca.techform.group.GroupDetailsActivity"/>
+		<import type="info.nivaldobondanca.techform.group.details.GroupDetailsActivity"/>
 
 		<variable name="viewModel" type="GroupDetailsActivity"/>
 	</data>

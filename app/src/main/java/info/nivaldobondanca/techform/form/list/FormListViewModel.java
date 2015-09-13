@@ -1,4 +1,4 @@
-package info.nivaldobondanca.techform.form;
+package info.nivaldobondanca.techform.form.list;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.AdapterView;

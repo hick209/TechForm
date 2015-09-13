@@ -1,4 +1,4 @@
-package info.nivaldobondanca.techform.group;
+package info.nivaldobondanca.techform.group.details;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,8 +26,8 @@ import info.nivaldobondanca.techform.content.ApiCall;
 import info.nivaldobondanca.techform.content.ApiLoader;
 import info.nivaldobondanca.techform.content.FormContentObserver;
 import info.nivaldobondanca.techform.databinding.ActivityGroupDetailsBinding;
-import info.nivaldobondanca.techform.form.FormListFragment;
-import info.nivaldobondanca.techform.form.FormSummaryFragment;
+import info.nivaldobondanca.techform.form.list.FormListFragment;
+import info.nivaldobondanca.techform.form.summary.FormSummaryFragment;
 import info.nivaldobondanca.techform.util.Utils;
 
 /**

@@ -1,16 +1,14 @@
-package info.nivaldobondanca.techform.form;
+package info.nivaldobondanca.techform.form.summary;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -21,7 +19,8 @@ import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
 import info.nivaldobondanca.techform.R;
 import info.nivaldobondanca.techform.content.FormContentObserver;
-import info.nivaldobondanca.techform.group.GroupDetailsActivity;
+import info.nivaldobondanca.techform.databinding.FragmentFormSummaryBinding;
+import info.nivaldobondanca.techform.group.details.GroupDetailsActivity;
 import info.nivaldobondanca.techform.question.SectionQuestionsActivity;
 import info.nivaldobondanca.techform.widget.BasicListAdapter;
 
@@ -30,7 +29,7 @@ import static com.google.common.base.Objects.firstNonNull;
 /**
  * @author Nivaldo Bondança
  */
-public class FormSummaryFragment extends Fragment implements FormContentObserver {
+public class FormSummaryFragment extends Fragment implements FormContentObserver, AdapterView.OnItemClickListener {
 
 	public static FormSummaryFragment instantiate() {
 		Bundle args = new Bundle();
@@ -65,40 +64,30 @@ public class FormSummaryFragment extends Fragment implements FormContentObserver
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_form_summary, container, false);
-	}
+		FragmentFormSummaryBinding binding = FragmentFormSummaryBinding.inflate(inflater, container, false);
+		binding.setViewModel(this);
 
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		ListView formList = (ListView) view.findViewById(android.R.id.list);
-		formList.setAdapter(mAdapter);
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.fragment_form_summary, menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.form_start:
-				GroupDetailsActivity activity = (GroupDetailsActivity) getActivity();
-				// TODO figure out a way to navigate through the questions
-				Intent intent = SectionQuestionsActivity.newInstance(activity, activity.getForm(), 0);
-				startActivity(intent);
-				return true;
-		}
-
-		return super.onOptionsItemSelected(item);
+		return binding.getRoot();
 	}
 
 	@Override
 	public void onChange(GroupDetailsActivity activity, List<Form> newData) {
 		mAdapter.changeData(activity.getForm().getSections());
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		GroupDetailsActivity activity = (GroupDetailsActivity) getActivity();
+		Intent intent = SectionQuestionsActivity.newInstance(activity, activity.getForm(), position);
+		startActivity(intent);
+	}
+
+	public ListAdapter getAdapter() {
+		return mAdapter;
+	}
+
+	public boolean isEmpty() {
+		return mAdapter.isEmpty();
 	}
 
 	private class SectionSummaryAdapter extends BasicListAdapter<FormSection> {
@@ -126,8 +115,8 @@ public class FormSummaryFragment extends Fragment implements FormContentObserver
 
 			int count = firstNonNull(item.getQuestions(),
 					Collections.<FormQuestion>emptyList()).size();
-			CharSequence text = getResources().getQuantityText(R.plurals.question, count);
-			String summary = String.format("%d %s", count, text);
+			String summary = getResources().getQuantityString(R.plurals.question, count, count);
+
 			((TextView) view.findViewById(R.id.section_summary)).setText(summary);
 		}
 	}

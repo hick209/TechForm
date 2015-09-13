@@ -1,4 +1,4 @@
-package info.nivaldobondanca.techform.form;
+package info.nivaldobondanca.techform.form.list;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -17,7 +17,7 @@ import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.techform.R;
 import info.nivaldobondanca.techform.content.FormContentObserver;
 import info.nivaldobondanca.techform.databinding.FragmentFormListBinding;
-import info.nivaldobondanca.techform.group.GroupDetailsActivity;
+import info.nivaldobondanca.techform.group.details.GroupDetailsActivity;
 import info.nivaldobondanca.techform.widget.BasicListAdapter;
 
 import static com.google.common.base.Objects.firstNonNull;

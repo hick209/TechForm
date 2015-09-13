@@ -1,4 +1,4 @@
-package info.nivaldobondanca.techform.group;
+package info.nivaldobondanca.techform.group.list;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import info.nivaldobondanca.techform.R;
 import info.nivaldobondanca.techform.content.ApiCall;
 import info.nivaldobondanca.techform.content.ListLoaderCallback;
 import info.nivaldobondanca.techform.databinding.ActivityGroupListBinding;
+import info.nivaldobondanca.techform.group.details.GroupDetailsActivity;
 import info.nivaldobondanca.techform.util.Utils;
 import info.nivaldobondanca.techform.widget.BasicListAdapter;
 

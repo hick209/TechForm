@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<plurals name="question">
-		<item quantity="other">questão</item>
-		<item quantity="zero">questão</item>
-		<item quantity="one">questão</item>
-		<item quantity="many">questões</item>
+		<item quantity="zero">Nenhuma questão</item>
+		<item quantity="one">Uma questão</item>
+		<item quantity="two">Duas questões</item>
+		<item quantity="other">%d questões</item>
 	</plurals>
 </resources>

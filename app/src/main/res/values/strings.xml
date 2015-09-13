@@ -11,6 +11,7 @@
 	<string name="action_form_fillUp">Preencher</string>
 
 	<!-- Empty -->
+	<string name="empty_form">Formulário vazio</string>
 	<string name="empty_forms">Nenhum formulário cadastrado</string>
 	<string name="empty_groups">Nenhum grupo cadastrado</string>
 

@@ -3,7 +3,7 @@ package info.nivaldobondanca.techform.content;
 import java.util.List;
 
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
-import info.nivaldobondanca.techform.group.GroupDetailsActivity;
+import info.nivaldobondanca.techform.group.details.GroupDetailsActivity;
 
 /**
  * @author Nivaldo Bondança
