@@ -125,7 +125,7 @@ public class GroupListActivity extends AppCompatActivity
 					@Override
 					public Boolean call(TechFormAPI api) {
 						try {
-							api.group().save(g.getId(), jsonData);
+							api.group().save(g.getId(), jsonData).execute();
 							return true;
 						} catch (IOException e) {
 							Log.d(LOG_TAG, "Error while upload file", e);

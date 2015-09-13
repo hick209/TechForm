@@ -101,10 +101,10 @@ public class TechFormEndpoint {
 	}
 
 	@ApiMethod(name = "group.save")
-	public void setGroupForms(
+	public void setSaveGroup(
 			@Named("groupId") Long groupId,
 			@Named("data") String data)
-			throws EntityNotFoundException, IOException {
+			throws IOException {
 
 		// Get the key
 		Key rootKey = KeyFactory.createKey("Root", 1);
