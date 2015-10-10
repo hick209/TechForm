@@ -1,6 +1,7 @@
 package finep.inovatec.form.summary;
 
 import android.content.Intent;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -107,17 +108,17 @@ public class FormSummaryFragment extends Fragment implements FormContentObserver
 		}
 
 		@Override
-		protected void bindView(View view, FormSection item) {
+		protected void bindView(ViewDataBinding binding, FormSection item) {
 			String code = item.getCodeName();
-			((TextView) view.findViewById(R.id.section_code)).setText(code);
+			((TextView) binding.findViewById(R.id.section_code)).setText(code);
 
-			((TextView) view.findViewById(R.id.section_name)).setText(item.getName());
+			((TextView) binding.findViewById(R.id.section_name)).setText(item.getName());
 
 			int count = firstNonNull(item.getQuestions(),
 					Collections.<FormQuestion>emptyList()).size();
 			String summary = getResources().getQuantityString(R.plurals.question, count, count);
 
-			((TextView) view.findViewById(R.id.section_summary)).setText(summary);
+			((TextView) binding.findViewById(R.id.section_summary)).setText(summary);
 		}
 	}
 }

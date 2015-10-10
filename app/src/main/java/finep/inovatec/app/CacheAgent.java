@@ -1,4 +1,4 @@
-package finep.inovatec.cache;
+package finep.inovatec.app;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

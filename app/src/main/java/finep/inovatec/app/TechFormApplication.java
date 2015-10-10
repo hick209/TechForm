@@ -7,11 +7,14 @@ import android.app.Application;
  */
 public class TechFormApplication extends Application {
 
+	private CacheAgent mCacheAgent;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
-		// TODO
+		mCacheAgent = new CacheAgent(this);
 	}
+
 
 }

@@ -1,5 +1,6 @@
 package finep.inovatec.form.list;
 
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -104,10 +105,10 @@ public class FormListFragment extends Fragment implements FormContentObserver,
 		}
 
 		@Override
-		protected void bindView(View view, Form item) {
-			((TextView) view.findViewById(R.id.form_code)).setText(item.getCodeName());
+		protected void bindView(ViewDataBinding binding, Form item) {
+			((TextView) binding.findViewById(R.id.form_code)).setText(item.getCodeName());
 
-			((TextView) view.findViewById(R.id.form_name)).setText(item.getName());
+			((TextView) binding.findViewById(R.id.form_name)).setText(item.getName());
 		}
 	}
 }

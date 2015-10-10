@@ -1,6 +1,8 @@
 package finep.inovatec.common;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,7 @@ import static com.google.common.base.Objects.firstNonNull;
 /**
  * @author Nivaldo Bondança
  */
-public abstract class BasicListAdapter<E> extends BaseAdapter {
+public abstract class BasicListAdapter<E, B extends ViewDataBinding> extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 	private List<E>        mData;
@@ -52,16 +54,23 @@ public abstract class BasicListAdapter<E> extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		B binding;
 		if (convertView == null) {
-			convertView = mInflater.inflate(getItemLayoutResource(), parent, false);
+			binding = DataBindingUtil.inflate(mInflater, getItemLayoutResource(), parent, false);
+			convertView = binding.getRoot();
+			convertView.setTag(binding);
+		}
+		else {
+			//noinspection unchecked
+			binding = (B) convertView.getTag();
 		}
 
-		bindView(convertView, getItem(position));
+		bindView(binding, getItem(position));
 
 		return convertView;
 	}
 
-	protected abstract void bindView(View view, E item);
+	protected abstract void bindView(B binding, E item);
 
 	protected abstract @LayoutRes int getItemLayoutResource();
 }

@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -13,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +41,6 @@ import finep.inovatec.databinding.ActivityGroupListBinding;
 import finep.inovatec.group.ApiCaller;
 import finep.inovatec.group.details.GroupDetailsActivity;
 import finep.inovatec.util.ParseUtils;
-import finep.inovatec.util.Utils;
 import finep.inovatec.common.BasicListAdapter;
 import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
@@ -218,8 +217,8 @@ public class GroupListActivity extends BaseActivity
 		}
 
 		@Override
-		protected void bindView(View view, Group item) {
-			((TextView) view.findViewById(android.R.id.text1))
+		protected void bindView(ViewDataBinding binding, Group item) {
+			((TextView) binding.findViewById(android.R.id.text1))
 					.setText(item.getName());
 		}
 

@@ -17,7 +17,9 @@ public class BaseActivity extends AppCompatActivity {
 		return toolbar;
 	}
 
-	protected TechFormApplication getTechFormApplication() {
+
+
+	private TechFormApplication getTechFormApplication() {
 		return (TechFormApplication) getApplication();
 	}
 

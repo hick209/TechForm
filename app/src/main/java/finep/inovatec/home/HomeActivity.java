@@ -21,6 +21,8 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 		ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 		binding.setViewModel(mViewModel);
 
+		mViewModel = new HomeViewModel(new FillingAdapter(this));
+
 		mViewModel.setCallbacks(this);
 	}
 
