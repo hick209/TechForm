@@ -66,7 +66,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements SwipeRefr
 		ActivityGroupDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_group_details);
 		binding.setViewModel(this);
 
-		Utils.setupToolbar(this);
+		setupToolbar();
 
 		mLoaderCallback = new FormsLoaderCallback();
 
