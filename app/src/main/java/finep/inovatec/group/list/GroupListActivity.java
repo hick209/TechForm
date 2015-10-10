@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import finep.inovatec.R;
+import finep.inovatec.app.BaseActivity;
 import finep.inovatec.content.ApiCall;
 import finep.inovatec.content.ListLoaderCallback;
 import finep.inovatec.databinding.ActivityGroupListBinding;
@@ -48,7 +49,7 @@ import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 /**
  * @author Nivaldo Bondança
  */
-public class GroupListActivity extends AppCompatActivity
+public class GroupListActivity extends BaseActivity
 		implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
 
 	private static final String LOG_TAG = GroupListActivity.class.getSimpleName();
@@ -73,7 +74,7 @@ public class GroupListActivity extends AppCompatActivity
 		mBinding = DataBindingUtil.setContentView(this, R.layout.activity_group_list);
 		mBinding.setViewModel(mViewModel);
 
-		Utils.setupToolbar(this);
+		setupToolbar();
 	}
 
 	@Override

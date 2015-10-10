@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<import type="finep.inovatec.home.HomeViewModel"/>
+		<import type="android.view.View"/>
+
+		<variable name="viewModel" type="HomeViewModel"/>
+	</data>
+
+	<android.support.design.widget.CoordinatorLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".group.GroupListActivity">
+
+		<android.support.design.widget.AppBarLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+			<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="?attr/actionBarSize"
+				android:title="@{viewModel.toolbarTitle}"
+				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+		</android.support.design.widget.AppBarLayout>
+
+		<ViewSwitcher
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:displayChild="@{viewModel.firstTimeLoading ? 1 : 0}"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<android.support.v4.widget.SwipeRefreshLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					app:colorScheme="@{viewModel.refreshLayoutColors}"
+					app:refreshing="@{viewModel.loading}"
+					app:onRefresh="@{viewModel.refreshListener}">
+
+					<ListView
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:paddingBottom="88dp"
+						app:adapter="@{viewModel.adapter}"
+						app:onItemClick="@{viewModel.itemClickListener}"
+						style="@style/List"
+						tools:listitem="@android:layout/simple_list_item_2"/>
+				</android.support.v4.widget.SwipeRefreshLayout>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:text="@string/empty_fillings"
+					android:visibility="@{viewModel.empty ? View.VISIBLE : View.GONE}"
+					style="@style/List.Empty"
+					tools:visibility="visible"/>
+			</FrameLayout>
+
+			<ProgressBar
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				style="?android:attr/progressBarStyleLarge"/>
+		</ViewSwitcher>
+
+		<android.support.design.widget.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="16dp"
+			android:layout_gravity="bottom|end"
+			android:src="@drawable/ic_content_add"
+			android:onClick="@{viewModel.newFilling}"
+			app:fabSize="normal"
+			app:borderWidth="0dp"
+			app:pressedTranslationZ="12dp"/>
+	</android.support.design.widget.CoordinatorLayout>
+
+</layout>
+

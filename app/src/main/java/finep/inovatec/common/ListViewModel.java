@@ -19,9 +19,9 @@ public abstract class ListViewModel extends BaseObservable {
 	private boolean           mFirstTimeLoading = true;
 	private @ColorRes int[]   mRefreshLayoutColors = {
 			R.color.app_primary,
-			R.color.app_primary_light,
 			R.color.app_accent,
-			R.color.app_primary_dark
+			R.color.app_primary_dark,
+			R.color.app_primary_light,
 	};
 
 	@Bindable
