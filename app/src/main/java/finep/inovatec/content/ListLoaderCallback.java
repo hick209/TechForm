@@ -1,6 +1,7 @@
 package finep.inovatec.content;
 
 import android.content.Context;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -12,12 +13,12 @@ import finep.inovatec.common.BasicListAdapter;
 /**
  * @author Nivaldo Bondança
  */
-public abstract class ListLoaderCallback<T> implements LoaderManager.LoaderCallbacks<List<T>> {
+public abstract class ListLoaderCallback<T, B extends ViewDataBinding> implements LoaderManager.LoaderCallbacks<List<T>> {
 
-	private BasicListAdapter<T> mAdapter;
-	private Context             mContext;
+	private BasicListAdapter<T, B> mAdapter;
+	private Context                mContext;
 
-	public ListLoaderCallback(BasicListAdapter<T> adapter, Context context) {
+	public ListLoaderCallback(BasicListAdapter<T, B> adapter, Context context) {
 		mAdapter = adapter;
 		mContext = context;
 	}

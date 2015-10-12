@@ -15,6 +15,7 @@ import org.json.JSONException;
 
 import java.util.List;
 
+import finep.inovatec.app.BaseActivity;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
@@ -25,7 +26,7 @@ import finep.inovatec.util.Utils;
 /**
  * @author Nivaldo Bondança
  */
-public class SectionQuestionsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SectionQuestionsActivity extends BaseActivity implements View.OnClickListener {
 
 	private static final String EXTRA_FORM             = "extra.FORM";
 	private static final String EXTRA_SECTION_POSITION = "extra.SECTION_POSITION";
@@ -56,7 +57,7 @@ public class SectionQuestionsActivity extends AppCompatActivity implements View.
 			throw new RuntimeException(e);
 		}
 
-		Toolbar toolbar = Utils.setupToolbar(this);
+		Toolbar toolbar = setupToolbar();
 		String sectionCode = getSectionCode(form, currentSection);
 		toolbar.setTitle(sectionCode);
 

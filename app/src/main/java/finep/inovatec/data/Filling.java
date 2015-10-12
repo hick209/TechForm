@@ -9,7 +9,7 @@ public class Filling {
 	private String mCode;
 	private String mAddress;
 	private long   mDeliverTimestamp;
-	private String mInspectionResponsable;
+	private String mInspectionResponsible;
 	private long   mBeginningTimestamp;
 	private long   mEndingTimestamp;
 
@@ -45,12 +45,12 @@ public class Filling {
 		mDeliverTimestamp = deliverTimestamp;
 	}
 
-	public String getInspectionResponsable() {
-		return mInspectionResponsable;
+	public String getInspectionResponsible() {
+		return mInspectionResponsible;
 	}
 
-	public void setInspectionResponsable(String inspectionResponsable) {
-		mInspectionResponsable = inspectionResponsable;
+	public void setInspectionResponsible(String inspectionResponsible) {
+		mInspectionResponsible = inspectionResponsible;
 	}
 
 	public long getBeginningTimestamp() {
@@ -76,7 +76,7 @@ public class Filling {
 				", code='" + mCode + '\'' +
 				", address='" + mAddress + '\'' +
 				", deliverTimestamp=" + mDeliverTimestamp +
-				", inspectionResponsable='" + mInspectionResponsable + '\'' +
+				", inspectionResponsable='" + mInspectionResponsible + '\'' +
 				", beginningTimestamp=" + mBeginningTimestamp +
 				", endingTimestamp=" + mEndingTimestamp +
 				'}';

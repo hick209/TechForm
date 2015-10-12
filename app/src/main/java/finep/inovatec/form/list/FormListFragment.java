@@ -1,6 +1,5 @@
 package finep.inovatec.form.list;
 
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -10,15 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import java.util.List;
 
 import finep.inovatec.R;
+import finep.inovatec.common.BasicListAdapter;
 import finep.inovatec.content.FormContentObserver;
 import finep.inovatec.databinding.FragmentFormListBinding;
+import finep.inovatec.databinding.ItemFormBinding;
 import finep.inovatec.group.details.GroupDetailsActivity;
-import finep.inovatec.common.BasicListAdapter;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 
 /**
@@ -89,7 +88,7 @@ public class FormListFragment extends Fragment implements FormContentObserver,
 		return mAdapter;
 	}
 
-	private class FormAdapter extends BasicListAdapter<Form> {
+	private class FormAdapter extends BasicListAdapter<Form, ItemFormBinding> {
 		public FormAdapter() {
 			super(getActivity());
 		}
@@ -101,14 +100,15 @@ public class FormListFragment extends Fragment implements FormContentObserver,
 
 		@Override
 		protected @LayoutRes int getItemLayoutResource() {
-			return R.layout.item_form_card;
+			return R.layout.item_form;
 		}
 
 		@Override
-		protected void bindView(ViewDataBinding binding, Form item) {
-			((TextView) binding.findViewById(R.id.form_code)).setText(item.getCodeName());
+		protected void bindView(ItemFormBinding binding, Form item) {
+			// TODO
+//			((TextView) binding.findViewById(R.id.form_code)).setText(item.getCodeName());
 
-			((TextView) binding.findViewById(R.id.form_name)).setText(item.getName());
+//			((TextView) binding.findViewById(R.id.form_name)).setText(item.getName());
 		}
 	}
 }

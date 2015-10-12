@@ -3,6 +3,7 @@ package finep.inovatec.group.list;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.AdapterView;
 
+import finep.inovatec.databinding.ItemGroupBinding;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 import finep.inovatec.common.ListViewModel;
 import finep.inovatec.common.BasicListAdapter;
@@ -24,7 +25,7 @@ public class GroupListViewModel extends ListViewModel {
 	}
 
 	@Override
-	public BasicListAdapter<Group> getAdapter() {
+	public BasicListAdapter<Group, ItemGroupBinding> getAdapter() {
 		return mActivity.getAdapter();
 	}
 

@@ -1,14 +1,11 @@
 package finep.inovatec.group.details;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.io.IOException;
@@ -18,22 +15,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;
-import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
-import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 import finep.inovatec.R;
+import finep.inovatec.app.BaseActivity;
 import finep.inovatec.content.ApiCall;
 import finep.inovatec.content.ApiLoader;
 import finep.inovatec.content.FormContentObserver;
 import finep.inovatec.databinding.ActivityGroupDetailsBinding;
 import finep.inovatec.form.list.FormListFragment;
 import finep.inovatec.form.summary.FormSummaryFragment;
-import finep.inovatec.util.Utils;
+import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
 /**
  * @author Nivaldo Bondança
  */
-public class GroupDetailsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class GroupDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 	public static final String LOG_TAG = GroupDetailsActivity.class.getSimpleName();
 
@@ -41,12 +38,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements SwipeRefr
 	public static final String EXTRA_GROUP_NAME = "extra.GROUP_NAME";
 
 	public static final String STATE_SELECTED_FORM = "extra.SELECTED_FORM";
-
-	public static Intent newInstance(Context c, long groupId, String groupName) {
-		return new Intent(c, GroupDetailsActivity.class)
-				.putExtra(EXTRA_GROUP_ID, groupId)
-				.putExtra(EXTRA_GROUP_NAME, groupName);
-	}
 
 	private Group      mGroup;
 	private List<Form> mData = Collections.emptyList();

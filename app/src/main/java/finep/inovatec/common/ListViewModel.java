@@ -1,6 +1,5 @@
 package finep.inovatec.common;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.ColorRes;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,7 +12,7 @@ import finep.inovatec.R;
 /**
  * @author Nivaldo Bondança
  */
-public abstract class ListViewModel extends BaseObservable {
+public abstract class ListViewModel extends ViewModel {
 
 	private boolean           mLoading;
 	private boolean           mFirstTimeLoading = true;

@@ -10,7 +10,7 @@ android {
 		minSdkVersion 17
 		targetSdkVersion 23
 		versionCode 1
-		versionName "0.1"
+		versionName "1.0"
 	}
 	buildTypes {
 		debug {
@@ -33,5 +33,5 @@ dependencies {
 	compile 'com.android.support:cardview-v7:23.0.1'
 	compile 'com.android.support:design:23.0.1'
 	// GSON
-	compile 'com.google.code.gson:gson:2.2.4'
+	compile 'com.google.code.gson:gson:2.3'
 }

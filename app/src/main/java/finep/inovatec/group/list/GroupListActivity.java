@@ -6,7 +6,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -19,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.base.Charsets;
@@ -35,13 +33,14 @@ import java.util.List;
 
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
+import finep.inovatec.common.BasicListAdapter;
 import finep.inovatec.content.ApiCall;
 import finep.inovatec.content.ListLoaderCallback;
 import finep.inovatec.databinding.ActivityGroupListBinding;
+import finep.inovatec.databinding.ItemGroupBinding;
 import finep.inovatec.group.ApiCaller;
-import finep.inovatec.group.details.GroupDetailsActivity;
+import finep.inovatec.home.HomeActivity;
 import finep.inovatec.util.ParseUtils;
-import finep.inovatec.common.BasicListAdapter;
 import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
@@ -56,8 +55,8 @@ public class GroupListActivity extends BaseActivity
 	private static final int REQUEST_PERMISSION = 0;
 	private static final int REQUEST_FILE       = 1;
 
-	private GroupAdapter              mAdapter;
-	private ListLoaderCallback<Group> mLoaderCallback;
+	private GroupAdapter                                mAdapter;
+	private ListLoaderCallback<Group, ItemGroupBinding> mLoaderCallback;
 
 	private GroupListViewModel       mViewModel;
 	private ActivityGroupListBinding mBinding;
@@ -158,11 +157,10 @@ public class GroupListActivity extends BaseActivity
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Group group = mAdapter.getItem(position);
-		startActivity(GroupDetailsActivity.newInstance(this, group.getId(), group.getName()));
+		startActivity(HomeActivity.newInstance(this, group.getId(), group.getName()));
 	}
 
 	private void showFileChooser() {
-
 		if (!getPermission()) return;
 
 		// Create the intent
@@ -180,7 +178,7 @@ public class GroupListActivity extends BaseActivity
 		}
 	}
 
-	public BasicListAdapter<Group> getAdapter() {
+	public GroupAdapter getAdapter() {
 		return mAdapter;
 	}
 
@@ -205,7 +203,7 @@ public class GroupListActivity extends BaseActivity
 		}
 	}
 
-	private class GroupAdapter extends BasicListAdapter<Group> {
+	private class GroupAdapter extends BasicListAdapter<Group, ItemGroupBinding> {
 
 		public GroupAdapter() {
 			super(GroupListActivity.this);
@@ -217,18 +215,17 @@ public class GroupListActivity extends BaseActivity
 		}
 
 		@Override
-		protected void bindView(ViewDataBinding binding, Group item) {
-			((TextView) binding.findViewById(android.R.id.text1))
-					.setText(item.getName());
+		protected void bindView(ItemGroupBinding binding, Group item) {
+			binding.setText(item.getName());
 		}
 
 		@Override
 		protected @LayoutRes int getItemLayoutResource() {
-			return android.R.layout.simple_list_item_1;
+			return R.layout.item_group;
 		}
 	}
 
-	private class GroupsLoaderCallback extends ListLoaderCallback<Group>
+	private class GroupsLoaderCallback extends ListLoaderCallback<Group, ItemGroupBinding>
 			implements ApiCall<List<Group>> {
 
 		public GroupsLoaderCallback() {
