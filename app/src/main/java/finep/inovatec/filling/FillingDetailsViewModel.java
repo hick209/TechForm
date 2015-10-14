@@ -35,7 +35,7 @@ public class FillingDetailsViewModel extends ViewModel {
 	}
 
 	@Bindable
-	public CharSequence getToolbarSubtitle(CharSequence toolbarTitle) {
+	public CharSequence getToolbarSubtitle() {
 		return mToolbarSubtitle;
 	}
 

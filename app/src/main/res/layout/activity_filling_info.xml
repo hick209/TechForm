@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 		<import type="finep.inovatec.filling.FillingDetailsViewModel"/>
@@ -15,6 +17,24 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 
+			<android.support.design.widget.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+
+
+				app:errorEnabled="true"
+				app:hintAnimationEnabled="true">
+
+				<EditText
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+
+					android:hint="@string/hint_code"
+
+
+					tools:ignore="Deprecated"
+					tools:text="20/09/1990"/>
+			</android.support.design.widget.TextInputLayout>
 
 		</LinearLayout>
 	</ScrollView>

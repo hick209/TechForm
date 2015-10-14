@@ -60,6 +60,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:text="@string/empty_fillings"
+					android:paddingBottom="88dp"
 					android:visibility="@{viewModel.empty ? View.VISIBLE : View.GONE}"
 					style="@style/List.Empty"
 					tools:visibility="visible"/>

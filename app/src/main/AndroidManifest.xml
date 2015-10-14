@@ -34,6 +34,8 @@
 				android:value=".group.list.GroupListActivity"/>
 		</activity>
 
+		<activity android:name=".home.HomeActivity"/>
+
 		<activity
 			android:name=".question.SectionQuestionsActivity"
 			android:parentActivityName=".group.details.GroupDetailsActivity">

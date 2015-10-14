@@ -17,6 +17,14 @@
 	<string name="empty_forms">Nenhum formulário cadastrado</string>
 	<string name="empty_groups">Nenhum grupo cadastrado</string>
 
+	<!-- Hint -->
+	<string name="hint_code">Código</string>
+	<string name="hint_address">Endereço</string>
+	<string name="hint_deliverTimestamp">Data de entrega</string>
+	<string name="hint_inspectionResponsible">Responsável pela inspeção</string>
+	<string name="hint_beginningTimestamp">Início</string>
+	<string name="hint_endTimestamp">Fim</string>
+
 	<!-- Message -->
 	<string name="message_noFileChooser">Primeiro instale um gerenciador de arquivos.</string>
 	<string name="message_ioError">Erro, verifique sua conexão.</string>
