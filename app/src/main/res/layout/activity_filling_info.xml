@@ -53,7 +53,8 @@
 						android:text="@{viewModel.code}"
 						android:hint="@string/hint_code"
 						android:enabled="@{viewModel.editable}"
-						android:lines="1"
+						android:maxLines="1"
+						android:singleLine="true"
 						app:textWatcher="@{viewModel.codeValidator}"
 						tools:text="20"/>
 				</android.support.design.widget.TextInputLayout>
@@ -71,7 +72,9 @@
 						android:text="@{viewModel.address}"
 						android:hint="@string/hint_address"
 						android:enabled="@{viewModel.editable}"
-						android:lines="1"
+						android:maxLines="1"
+						android:singleLine="true"
+						android:inputType="textPostalAddress"
 						app:textWatcher="@{viewModel.addressValidator}"
 						tools:text="Rua do Bosque, 100"/>
 				</android.support.design.widget.TextInputLayout>
@@ -88,6 +91,7 @@
 						android:text="@{viewModel.deliverTimestamp}"
 						android:hint="@string/hint_deliverTimestamp"
 						android:enabled="@{viewModel.editable}"
+						android:onClick="@{viewModel.deliverClick}"
 						android:editable="false"
 						android:inputType="textNoSuggestions"
 						android:focusable="false"
@@ -109,7 +113,9 @@
 						android:text="@{viewModel.inspectionResponsible}"
 						android:hint="@string/hint_inspectionResponsible"
 						android:enabled="@{viewModel.editable}"
-						android:lines="1"
+						android:maxLines="1"
+						android:singleLine="true"
+						android:inputType="textPersonName"
 						app:textWatcher="@{viewModel.responsibleValidator}"
 						tools:text="Nivaldo Bondanca"/>
 				</android.support.design.widget.TextInputLayout>
@@ -125,7 +131,7 @@
 						android:layout_height="wrap_content"
 						android:text="@{viewModel.beginningTimestamp}"
 						android:hint="@string/hint_beginningTimestamp"
-						android:enabled="@{viewModel.editable}"
+						android:enabled="false"
 						android:editable="false"
 						android:inputType="textNoSuggestions"
 						android:focusable="false"
@@ -145,6 +151,7 @@
 						android:layout_gravity="end"
 						android:text="Go!"
 						android:enabled="@{viewModel.formOk}"
+						android:onClick="@{viewModel.finish}"
 						style="@style/Widget.AppCompat.Button.Colored"/>
 
 					<android.support.design.widget.TextInputLayout
@@ -158,7 +165,7 @@
 							android:layout_height="wrap_content"
 							android:text="@{viewModel.endingTimestamp}"
 							android:hint="@string/hint_endingTimestamp"
-							android:enabled="@{viewModel.editable}"
+							android:enabled="false"
 							android:editable="false"
 							android:inputType="textNoSuggestions"
 							android:focusable="false"

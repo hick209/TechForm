@@ -5,6 +5,7 @@ import android.databinding.Bindable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -15,16 +16,24 @@ import finep.inovatec.R;
 import finep.inovatec.common.ViewModel;
 import finep.inovatec.components.SimpleTextWatcher;
 import finep.inovatec.data.Filling;
+import finep.inovatec.databinding.ActivityFillingInfoBinding;
 
 /**
  * @author Nivaldo Bondança
  */
 public class FillingDetailsViewModel extends ViewModel {
 
+	public interface FillingDetailsCallbacks {
+		void pickDeliverDate(long initialTimestamp);
+
+		void saveAndStartFilling(Filling filling);
+	}
+
 	private CharSequence mToolbarTitle;
 	private CharSequence mToolbarSubtitle;
 
 	private Filling      mFilling;
+	private boolean mNewFilling;
 	private DateFormat   mDateFormatter;
 	private DateFormat   mTimeFormatter;
 
@@ -37,28 +46,38 @@ public class FillingDetailsViewModel extends ViewModel {
 	private final TextWatcher mCodeValidator = new SimpleTextWatcher() {
 		@Override
 		public void afterTextChanged(Editable s) {
+			mFilling.setCode(s.toString());
 			setCodeError(TextUtils.isEmpty(s) ? mErrorRequired : null);
 		}
 	};
 	private final TextWatcher mAddressValidator = new SimpleTextWatcher() {
 		@Override
 		public void afterTextChanged(Editable s) {
+			mFilling.setAddress(s.toString());
 			setAddressError(TextUtils.isEmpty(s) ? mErrorRequired : null);
 		}
 	};
 	private final TextWatcher mResponsibleValidator = new SimpleTextWatcher() {
 		@Override
 		public void afterTextChanged(Editable s) {
+			mFilling.setInspectionResponsible(s.toString());
 			setResponsibleError(TextUtils.isEmpty(s) ? mErrorRequired : null);
 		}
 	};
 
-	public FillingDetailsViewModel(Context context, Filling filling) {
+	private FillingDetailsCallbacks mCallbacks;
+
+	public FillingDetailsViewModel(Context context, ActivityFillingInfoBinding binding, Filling filling, boolean newFilling) {
 		mFilling = filling;
+		mNewFilling = newFilling;
 		mDateFormatter = android.text.format.DateFormat.getDateFormat(context);
 		mTimeFormatter = android.text.format.DateFormat.getTimeFormat(context);
 
 		mErrorRequired = context.getString(R.string.error_requiredField);
+	}
+
+	public void setCallbacks(FillingDetailsCallbacks callbacks) {
+		mCallbacks = callbacks;
 	}
 
 	@Bindable
@@ -103,6 +122,15 @@ public class FillingDetailsViewModel extends ViewModel {
 		return formatDateTimestamp(mFilling.getDeliverTimestamp());
 	}
 
+	public View.OnClickListener getDeliverClick() {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mCallbacks.pickDeliverDate(mFilling.getDeliverTimestamp());
+			}
+		};
+	}
+
 	@Bindable
 	public CharSequence getInspectionResponsible() {
 		return mFilling.getInspectionResponsible();
@@ -115,11 +143,14 @@ public class FillingDetailsViewModel extends ViewModel {
 
 	@Bindable
 	public CharSequence getEndingTimestamp() {
+		if (mFilling.getEndingTimestamp() == 0) {
+			return "";
+		}
 		return formatDatetimeTimestamp(mFilling.getEndingTimestamp());
 	}
 
 	public boolean getComplete() {
-		return mFilling.getEndingTimestamp() > 0;
+		return !mNewFilling;
 	}
 
 	public TextWatcher getCodeValidator() {
@@ -168,7 +199,7 @@ public class FillingDetailsViewModel extends ViewModel {
 	}
 
 	public boolean getEditable() {
-		return !getComplete();
+		return mNewFilling;
 	}
 
 	@Bindable
@@ -176,6 +207,15 @@ public class FillingDetailsViewModel extends ViewModel {
 		return mCodeError == null
 				&& mAddressError == null
 				&& mResponsibleError == null;
+	}
+
+	public View.OnClickListener getFinish() {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mCallbacks.saveAndStartFilling(mFilling);
+			}
+		};
 	}
 
 	private String formatDateTimestamp(long timestamp) {

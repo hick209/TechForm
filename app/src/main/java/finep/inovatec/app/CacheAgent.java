@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +44,7 @@ public class CacheAgent {
 		wrapper.setFillings(fillings);
 
 		// Save to the file
-		String json = mGson.toJson(fillings);
+		String json = mGson.toJson(wrapper);
 		Files.write(json.getBytes(), getFillingFile(groupId));
 	}
 

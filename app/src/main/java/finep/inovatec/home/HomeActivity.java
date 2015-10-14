@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 
 import java.io.IOException;
 import java.util.List;
@@ -79,18 +80,29 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 	@Override
 	public void onRefresh() {
 		mViewModel.setLoading(true);
+		final Handler handler = new Handler();
 		new Thread() {
 			@Override
 			public void run() {
 				try {
 					CacheAgent cacheAgent = getTechFormApplication().getCacheAgent();
-					List<Filling> data = cacheAgent.loadFillings(mGroup.getId());
-					mViewModel.getAdapter().changeData(data);
+					final List<Filling> data = cacheAgent.loadFillings(mGroup.getId());
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+							mViewModel.getAdapter().changeData(data);
+						}
+					});
 				}
 				catch (IOException ignored) {
 				}
 
-				mViewModel.setLoading(false);
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						mViewModel.setLoading(false);
+					}
+				});
 			}
 		}.start();
 	}
