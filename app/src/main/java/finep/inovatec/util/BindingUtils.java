@@ -2,8 +2,11 @@ package finep.inovatec.util;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.ColorRes;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextWatcher;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ViewAnimator;
@@ -43,5 +46,16 @@ public class BindingUtils {
 	@BindingAdapter("colorScheme")
 	public static void setRefreshLayoutColorScheme(SwipeRefreshLayout view, @ColorRes int[] colors) {
 		view.setColorSchemeResources(colors);
+	}
+
+	@BindingAdapter("error")
+	public static void setError(TextInputLayout view, CharSequence error) {
+		view.setError(error);
+	}
+
+	@BindingAdapter("textWatcher")
+	public static void addTextChangedListener(EditText view, TextWatcher textWatcher) {
+		view.addTextChangedListener(textWatcher);
+		view.setText(view.getText()); // Call the watcher
 	}
 }

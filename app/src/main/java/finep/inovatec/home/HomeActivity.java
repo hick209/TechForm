@@ -58,7 +58,9 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 		ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 		binding.setViewModel(mViewModel);
 
-		setupToolbar().setTitle(mViewModel.getToolbarTitle());
+		setupToolbar();
+		//noinspection ConstantConditions
+		getSupportActionBar().setTitle(mViewModel.getToolbarTitle());
 	}
 
 	@Override

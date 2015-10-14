@@ -43,6 +43,7 @@
 				<android.support.design.widget.TextInputLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					app:error="@{viewModel.codeError}"
 					app:errorEnabled="true"
 					app:hintAnimationEnabled="true">
 
@@ -51,13 +52,16 @@
 						android:layout_height="wrap_content"
 						android:text="@{viewModel.code}"
 						android:hint="@string/hint_code"
+						android:enabled="@{viewModel.editable}"
 						android:lines="1"
+						app:textWatcher="@{viewModel.codeValidator}"
 						tools:text="20"/>
 				</android.support.design.widget.TextInputLayout>
 
 				<android.support.design.widget.TextInputLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					app:error="@{viewModel.addressError}"
 					app:errorEnabled="true"
 					app:hintAnimationEnabled="true">
 
@@ -66,7 +70,9 @@
 						android:layout_height="wrap_content"
 						android:text="@{viewModel.address}"
 						android:hint="@string/hint_address"
+						android:enabled="@{viewModel.editable}"
 						android:lines="1"
+						app:textWatcher="@{viewModel.addressValidator}"
 						tools:text="Rua do Bosque, 100"/>
 				</android.support.design.widget.TextInputLayout>
 
@@ -81,6 +87,7 @@
 						android:layout_height="wrap_content"
 						android:text="@{viewModel.deliverTimestamp}"
 						android:hint="@string/hint_deliverTimestamp"
+						android:enabled="@{viewModel.editable}"
 						android:editable="false"
 						android:inputType="textNoSuggestions"
 						android:focusable="false"
@@ -92,6 +99,7 @@
 				<android.support.design.widget.TextInputLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					app:error="@{viewModel.responsibleError}"
 					app:errorEnabled="true"
 					app:hintAnimationEnabled="true">
 
@@ -100,7 +108,9 @@
 						android:layout_height="wrap_content"
 						android:text="@{viewModel.inspectionResponsible}"
 						android:hint="@string/hint_inspectionResponsible"
+						android:enabled="@{viewModel.editable}"
 						android:lines="1"
+						app:textWatcher="@{viewModel.responsibleValidator}"
 						tools:text="Nivaldo Bondanca"/>
 				</android.support.design.widget.TextInputLayout>
 
@@ -115,6 +125,7 @@
 						android:layout_height="wrap_content"
 						android:text="@{viewModel.beginningTimestamp}"
 						android:hint="@string/hint_beginningTimestamp"
+						android:enabled="@{viewModel.editable}"
 						android:editable="false"
 						android:inputType="textNoSuggestions"
 						android:focusable="false"
@@ -133,6 +144,7 @@
 						android:layout_height="wrap_content"
 						android:layout_gravity="end"
 						android:text="Go!"
+						android:enabled="@{viewModel.formOk}"
 						style="@style/Widget.AppCompat.Button.Colored"/>
 
 					<android.support.design.widget.TextInputLayout
@@ -146,6 +158,7 @@
 							android:layout_height="wrap_content"
 							android:text="@{viewModel.endingTimestamp}"
 							android:hint="@string/hint_endingTimestamp"
+							android:enabled="@{viewModel.editable}"
 							android:editable="false"
 							android:inputType="textNoSuggestions"
 							android:focusable="false"
