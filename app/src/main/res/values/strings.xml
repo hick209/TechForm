@@ -3,6 +3,9 @@
 	<!-- App -->
 	<string name="app_name">Inovatec M45</string>
 
+	<!-- Title Toolbar -->
+	<string name="title_toolbar_newFilling">Novo preenchimento</string>
+
 	<!-- Action Bar -->
 	<string name="action_update">Atualizar</string>
 	<string name="action_uploadData">Enviar formulário</string>
@@ -23,7 +26,7 @@
 	<string name="hint_deliverTimestamp">Data de entrega</string>
 	<string name="hint_inspectionResponsible">Responsável pela inspeção</string>
 	<string name="hint_beginningTimestamp">Início</string>
-	<string name="hint_endTimestamp">Fim</string>
+	<string name="hint_endingTimestamp">Fim</string>
 
 	<!-- Message -->
 	<string name="message_noFileChooser">Primeiro instale um gerenciador de arquivos.</string>

@@ -28,21 +28,17 @@
 
 		<activity
 			android:name=".group.details.GroupDetailsActivity"
-			android:parentActivityName=".group.list.GroupListActivity">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value=".group.list.GroupListActivity"/>
-		</activity>
+			android:parentActivityName=".group.list.GroupListActivity"/>
 
 		<activity android:name=".home.HomeActivity"/>
 
 		<activity
+			android:name=".filling.FillingInfoActivity"
+			android:parentActivityName=".home.HomeActivity"/>
+
+		<activity
 			android:name=".question.SectionQuestionsActivity"
-			android:parentActivityName=".group.details.GroupDetailsActivity">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value=".group.details.GroupDetailsActivity"/>
-		</activity>
+			android:parentActivityName=".group.details.GroupDetailsActivity"/>
 
 	</application>
 

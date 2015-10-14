@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import java.io.IOException;
+import java.util.List;
+
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
+import finep.inovatec.app.CacheAgent;
 import finep.inovatec.data.Filling;
 import finep.inovatec.databinding.ActivityHomeBinding;
+import finep.inovatec.filling.FillingInfoActivity;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
 /**
@@ -52,6 +57,8 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 
 		ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 		binding.setViewModel(mViewModel);
+
+		setupToolbar().setTitle(mViewModel.getToolbarTitle());
 	}
 
 	@Override
@@ -62,18 +69,38 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		onRefresh();
+	}
+
+	@Override
 	public void onRefresh() {
-		// TODO refresh the filling list and the forms
+		mViewModel.setLoading(true);
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					CacheAgent cacheAgent = getTechFormApplication().getCacheAgent();
+					List<Filling> data = cacheAgent.loadFillings(mGroup.getId());
+					mViewModel.getAdapter().changeData(data);
+				}
+				catch (IOException ignored) {
+				}
+
+				mViewModel.setLoading(false);
+			}
+		}.start();
 	}
 
 	@Override
 	public void newFilling() {
-		//TODO start a new filling
+		startActivity(FillingInfoActivity.newInstance(this, mGroup.getId()));
 	}
 
 	@Override
 	public void onItemClick(FillingAdapter adapter, Filling item) {
-		// TODO open the filling
+		startActivity(FillingInfoActivity.newInstance(this, item));
 	}
 
 }

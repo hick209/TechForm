@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools">
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".filling.FillingInfoActivity">
 
 	<data>
 		<import type="finep.inovatec.filling.FillingDetailsViewModel"/>
@@ -9,33 +10,152 @@
 		<variable name="viewModel" type="FillingDetailsViewModel"/>
 	</data>
 
-	<ScrollView
+	<android.support.design.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<LinearLayout
+		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-			<android.support.design.widget.TextInputLayout
+			<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="?attr/actionBarSize"
+				android:title="@{viewModel.toolbarTitle}"
+				android:subtitle="@{viewModel.toolbarSubtitle}"
+				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+		</android.support.design.widget.AppBarLayout>
+
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:clipToPadding="false"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:padding="16dp"
+				android:orientation="vertical">
 
-
-				app:errorEnabled="true"
-				app:hintAnimationEnabled="true">
-
-				<EditText
+				<android.support.design.widget.TextInputLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					app:errorEnabled="true"
+					app:hintAnimationEnabled="true">
 
-					android:hint="@string/hint_code"
+					<EditText
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@{viewModel.code}"
+						android:hint="@string/hint_code"
+						android:lines="1"
+						tools:text="20"/>
+				</android.support.design.widget.TextInputLayout>
 
+				<android.support.design.widget.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:errorEnabled="true"
+					app:hintAnimationEnabled="true">
 
-					tools:ignore="Deprecated"
-					tools:text="20/09/1990"/>
-			</android.support.design.widget.TextInputLayout>
+					<EditText
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@{viewModel.address}"
+						android:hint="@string/hint_address"
+						android:lines="1"
+						tools:text="Rua do Bosque, 100"/>
+				</android.support.design.widget.TextInputLayout>
 
-		</LinearLayout>
-	</ScrollView>
+				<android.support.design.widget.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:errorEnabled="true"
+					app:hintAnimationEnabled="true">
+
+					<EditText
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@{viewModel.deliverTimestamp}"
+						android:hint="@string/hint_deliverTimestamp"
+						android:editable="false"
+						android:inputType="textNoSuggestions"
+						android:focusable="false"
+						android:focusableInTouchMode="false"
+						tools:ignore="Deprecated"
+						tools:text="25/08/2016"/>
+				</android.support.design.widget.TextInputLayout>
+
+				<android.support.design.widget.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:errorEnabled="true"
+					app:hintAnimationEnabled="true">
+
+					<EditText
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@{viewModel.inspectionResponsible}"
+						android:hint="@string/hint_inspectionResponsible"
+						android:lines="1"
+						tools:text="Nivaldo Bondanca"/>
+				</android.support.design.widget.TextInputLayout>
+
+				<android.support.design.widget.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:errorEnabled="true"
+					app:hintAnimationEnabled="true">
+
+					<EditText
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@{viewModel.beginningTimestamp}"
+						android:hint="@string/hint_beginningTimestamp"
+						android:editable="false"
+						android:inputType="textNoSuggestions"
+						android:focusable="false"
+						android:focusableInTouchMode="false"
+						tools:ignore="Deprecated"
+						tools:text="25/08/2016  12:45"/>
+				</android.support.design.widget.TextInputLayout>
+
+				<ViewAnimator
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:displayChild="@{viewModel.complete ? 1 : 0}">
+
+					<Button
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="end"
+						android:text="Go!"
+						style="@style/Widget.AppCompat.Button.Colored"/>
+
+					<android.support.design.widget.TextInputLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						app:errorEnabled="true"
+						app:hintAnimationEnabled="true">
+
+						<EditText
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:text="@{viewModel.endingTimestamp}"
+							android:hint="@string/hint_endingTimestamp"
+							android:editable="false"
+							android:inputType="textNoSuggestions"
+							android:focusable="false"
+							android:focusableInTouchMode="false"
+							tools:ignore="Deprecated"
+							tools:text="25/08/2016  15:21"/>
+					</android.support.design.widget.TextInputLayout>
+				</ViewAnimator>
+			</LinearLayout>
+		</ScrollView>
+	</android.support.design.widget.CoordinatorLayout>
+
 </layout>

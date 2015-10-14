@@ -24,6 +24,10 @@ public class TechFormApplication extends Application {
 		mCacheAgent = new CacheAgent(this);
 	}
 
+	public CacheAgent getCacheAgent() {
+		return mCacheAgent;
+	}
+
 	public ViewModel get(String key) {
 		return mViewModels.get(key);
 	}

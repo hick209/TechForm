@@ -26,7 +26,7 @@ public class BaseActivity extends AppCompatActivity {
 		getTechFormApplication().put(key, viewModel);
 	}
 
-	private TechFormApplication getTechFormApplication() {
+	protected TechFormApplication getTechFormApplication() {
 		return (TechFormApplication) getApplication();
 	}
 

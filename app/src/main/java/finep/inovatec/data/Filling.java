@@ -8,9 +8,9 @@ public class Filling {
 	private long   mGroupId;
 	private String mCode;
 	private String mAddress;
-	private long   mDeliverTimestamp;
+	private long   mDeliverTimestamp = System.currentTimeMillis();
 	private String mInspectionResponsible;
-	private long   mBeginningTimestamp;
+	private long   mBeginningTimestamp = System.currentTimeMillis();
 	private long   mEndingTimestamp;
 
 	public long getGroupId() {
@@ -76,7 +76,7 @@ public class Filling {
 				", code='" + mCode + '\'' +
 				", address='" + mAddress + '\'' +
 				", deliverTimestamp=" + mDeliverTimestamp +
-				", inspectionResponsable='" + mInspectionResponsible + '\'' +
+				", inspectionResponsible='" + mInspectionResponsible + '\'' +
 				", beginningTimestamp=" + mBeginningTimestamp +
 				", endingTimestamp=" + mEndingTimestamp +
 				'}';
