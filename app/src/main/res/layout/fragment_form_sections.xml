@@ -4,10 +4,10 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<data>
-		<import type="finep.inovatec.form.summary.FormSummaryFragment"/>
+		<import type="finep.inovatec.form.FormSectionsFragment"/>
 		<import type="android.view.View"/>
 
-		<variable name="viewModel" type="FormSummaryFragment"/>
+		<variable name="viewModel" type="FormSectionsFragment"/>
 	</data>
 
 	<FrameLayout

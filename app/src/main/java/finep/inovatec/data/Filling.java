@@ -70,6 +70,25 @@ public class Filling {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Filling filling = (Filling) o;
+
+		if (mBeginningTimestamp != filling.mBeginningTimestamp) return false;
+		return !(mCode != null ? !mCode.equals(filling.mCode) : filling.mCode != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = mCode != null ? mCode.hashCode() : 0;
+		result = 31 * result + (int) (mBeginningTimestamp ^ (mBeginningTimestamp >>> 32));
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		return "Filling{" +
 				"groupId=" + mGroupId +

@@ -16,7 +16,6 @@ import java.util.List;
 import finep.inovatec.R;
 import finep.inovatec.common.BasicListAdapter;
 import finep.inovatec.content.FormContentObserver;
-import finep.inovatec.databinding.FragmentFormSummaryBinding;
 import finep.inovatec.databinding.ItemSectionSummaryBinding;
 import finep.inovatec.group.details.GroupDetailsActivity;
 import finep.inovatec.question.SectionQuestionsActivity;
@@ -64,10 +63,10 @@ public class FormSummaryFragment extends Fragment implements FormContentObserver
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		FragmentFormSummaryBinding binding = FragmentFormSummaryBinding.inflate(inflater, container, false);
-		binding.setViewModel(this);
+//		FragmentFormSummaryBinding binding = FragmentFormSummaryBinding.inflate(inflater, container, false);
+//		binding.setViewModel(this);
 
-		return binding.getRoot();
+		return null;
 	}
 
 	@Override

@@ -10,7 +10,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import finep.inovatec.data.Filling;
 
@@ -28,16 +30,22 @@ public class CacheAgent {
 		mFillingsDir.mkdirs();
 	}
 
-	public @NonNull List<Filling> loadFillings(long groupId) throws IOException {
+	public @NonNull Set<Filling> loadFillings(long groupId) throws IOException {
 		// Get the file
 		File file = getFillingFile(groupId);
 		FileReader reader = new FileReader(file);
 
 		FillingWrapper fillingWrapper = mGson.fromJson(reader, FillingWrapper.class);
-		return fillingWrapper.getFillings();
+		Set<Filling> fillings = fillingWrapper.getFillings();
+		if (fillings == null) {
+			return new HashSet<>();
+		}
+		else {
+			return fillings;
+		}
 	}
 
-	public void saveFillings(long groupId, List<Filling> fillings) throws IOException {
+	public void saveFillings(long groupId, Set<Filling> fillings) throws IOException {
 		// Create the wrapper
 		FillingWrapper wrapper = new FillingWrapper();
 		wrapper.setGroupId(groupId);
@@ -55,22 +63,23 @@ public class CacheAgent {
 
 	private class FillingWrapper {
 		@SerializedName("id")
-		private long          groupId;
-		private List<Filling> mFillings;
+		private long         mGroupId;
+		@SerializedName("fillings")
+		private Set<Filling> mFillings;
 
 		public long getGroupId() {
-			return groupId;
+			return mGroupId;
 		}
 
 		public void setGroupId(long groupId) {
-			this.groupId = groupId;
+			this.mGroupId = groupId;
 		}
 
-		public List<Filling> getFillings() {
+		public Set<Filling> getFillings() {
 			return mFillings;
 		}
 
-		public void setFillings(List<Filling> fillings) {
+		public void setFillings(Set<Filling> fillings) {
 			mFillings = fillings;
 		}
 	}

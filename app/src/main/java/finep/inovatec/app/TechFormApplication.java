@@ -5,6 +5,7 @@ import android.support.v4.util.ArrayMap;
 
 import java.util.Map;
 
+import finep.inovatec.FormFillingManager;
 import finep.inovatec.common.ViewModel;
 
 /**
@@ -22,6 +23,8 @@ public class TechFormApplication extends Application {
 
 		mViewModels = new ArrayMap<>();
 		mCacheAgent = new CacheAgent(this);
+
+		FormFillingManager.init(mCacheAgent);
 	}
 
 	public CacheAgent getCacheAgent() {

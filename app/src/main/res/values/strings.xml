@@ -22,7 +22,7 @@
 
 	<!-- Hint -->
 	<string name="hint_code">Código</string>
-	<string name="hint_address">Endereço</string>
+	<string name="hint_address">Endereço (ou identificação da amostra)</string>
 	<string name="hint_deliverTimestamp">Data de entrega</string>
 	<string name="hint_inspectionResponsible">Responsável pela inspeção</string>
 	<string name="hint_beginningTimestamp">Início</string>

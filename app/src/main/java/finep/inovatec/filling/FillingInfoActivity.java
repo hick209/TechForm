@@ -5,22 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.widget.DatePicker;
 
-import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
+import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
-import finep.inovatec.app.CacheAgent;
 import finep.inovatec.components.DatePickerFragment;
 import finep.inovatec.data.Filling;
 import finep.inovatec.databinding.ActivityFillingInfoBinding;
+import finep.inovatec.form.FormsActivity;
 
 /**
  * @author Nivaldo Bondança
@@ -28,39 +23,27 @@ import finep.inovatec.databinding.ActivityFillingInfoBinding;
 public class FillingInfoActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener,
 		FillingDetailsViewModel.FillingDetailsCallbacks {
 
-	private static final String EXTRA_FILLING  = "extra.FILLING";
-	private static final String EXTRA_GROUP_ID = "extra.GROUP_ID";
-
-	public static Intent newInstance(Context context, @NonNull Filling item) {
-		String json = new Gson().toJson(item);
-		return new Intent(context, FillingInfoActivity.class)
-				.putExtra(EXTRA_FILLING, json);
+	public static Intent newInstance(Context context) {
+		return new Intent(context, FillingInfoActivity.class);
 	}
 
-	public static Intent newInstance(Context context, long groupId) {
-		return new Intent(context, FillingInfoActivity.class)
-				.putExtra(EXTRA_GROUP_ID, groupId);
-	}
-
-	// TODO
 
 	private FillingDetailsViewModel mViewModel;
-
-	private Filling mFilling;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String json = getIntent().getStringExtra(EXTRA_FILLING);
-		Gson gson = new Gson();
-
-		mFilling = gson.fromJson(json, Filling.class);
+		FormFillingManager fillingManager = FormFillingManager.getInstance();
+		Filling filling = fillingManager.getFilling();
 		boolean newFilling;
-		if (mFilling == null) {
+		if (filling == null) {
 			newFilling = true;
-			mFilling = new Filling();
-			mFilling.setGroupId(getIntent().getLongExtra(EXTRA_GROUP_ID, -1));
+
+			filling = new Filling();
+			filling.setGroupId(fillingManager.getGroup().getId());
+
+			fillingManager.setFilling(filling);
 		}
 		else {
 			newFilling = false;
@@ -68,45 +51,29 @@ public class FillingInfoActivity extends BaseActivity implements DatePickerDialo
 
 
 		ActivityFillingInfoBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_filling_info);
-		mViewModel = new FillingDetailsViewModel(this, binding, mFilling, newFilling);
+		mViewModel = new FillingDetailsViewModel(this, binding, filling, newFilling);
 		mViewModel.setCallbacks(this);
 
 		binding.setViewModel(mViewModel);
 
-		mViewModel.setToolbar(newFilling ? getText(R.string.title_toolbar_newFilling) : mFilling.getCode(),
-				"Subtitle!"); // TODO change this text to the correct one
+		CharSequence title = newFilling ? getText(R.string.title_toolbar_newFilling) :
+				String.format("%s - %s", filling.getCode(), filling.getAddress());
 
 		setupToolbar();
 		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle(mViewModel.getToolbarTitle());
-		getSupportActionBar().setSubtitle(mViewModel.getToolbarSubtitle());
+		getSupportActionBar().setTitle(title);
+		getSupportActionBar().setSubtitle(fillingManager.getGroup().getName());
 	}
 
 	@Override
 	public void saveAndStartFilling(Filling filling) {
-		long groupId = filling.getGroupId();
-		CacheAgent cacheAgent = getTechFormApplication().getCacheAgent();
+		FormFillingManager manager = FormFillingManager.getInstance();
+		manager.setFilling(filling);
+		manager.save();
 
-		List<Filling> fillings;
-		try {
-			// Load
-			fillings = cacheAgent.loadFillings(groupId);
-		}
-		catch (IOException e) {
-			fillings = new ArrayList<>();
-		}
-
-		fillings.add(filling);
-
-		try {
-			// Save
-			cacheAgent.saveFillings(groupId, fillings);
-			finish();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+		finish();
+		startActivity(FormsActivity.newInstance(this));
 	}
 
 	@Override
@@ -129,8 +96,9 @@ public class FillingInfoActivity extends BaseActivity implements DatePickerDialo
 		c.set(Calendar.MONTH, monthOfYear);
 		c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-		mFilling.setDeliverTimestamp(c.getTimeInMillis());
-		mViewModel.setFilling(mFilling);
-	}
+		Filling filling = FormFillingManager.getInstance().getFilling();
 
+		filling.setDeliverTimestamp(c.getTimeInMillis());
+		mViewModel.setFilling(filling);
+	}
 }

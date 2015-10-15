@@ -23,8 +23,6 @@
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
 				android:layout_height="?attr/actionBarSize"
-				android:title="@{viewModel.toolbarTitle}"
-				android:subtitle="@{viewModel.toolbarSubtitle}"
 				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 		</android.support.design.widget.AppBarLayout>
 
@@ -155,7 +153,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="end"
-						android:text="Go!"
+						android:text="@string/action_form_fillUp"
 						android:enabled="@{viewModel.formOk}"
 						android:onClick="@{viewModel.finish}"
 						style="@style/Widget.AppCompat.Button.Colored"/>

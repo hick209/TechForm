@@ -29,11 +29,8 @@ public class FillingDetailsViewModel extends ViewModel {
 		void saveAndStartFilling(Filling filling);
 	}
 
-	private CharSequence mToolbarTitle;
-	private CharSequence mToolbarSubtitle;
-
 	private Filling      mFilling;
-	private boolean mNewFilling;
+	private boolean      mNewFilling;
 	private DateFormat   mDateFormatter;
 	private DateFormat   mTimeFormatter;
 
@@ -78,23 +75,6 @@ public class FillingDetailsViewModel extends ViewModel {
 
 	public void setCallbacks(FillingDetailsCallbacks callbacks) {
 		mCallbacks = callbacks;
-	}
-
-	@Bindable
-	public CharSequence getToolbarTitle() {
-		return mToolbarTitle;
-	}
-
-	@Bindable
-	public CharSequence getToolbarSubtitle() {
-		return mToolbarSubtitle;
-	}
-
-	public void setToolbar(CharSequence title, CharSequence subtitle) {
-		mToolbarTitle = title;
-		mToolbarSubtitle = subtitle;
-		notifyPropertyChanged(BR.toolbarTitle);
-		notifyPropertyChanged(BR.toolbarSubtitle);
 	}
 
 	public void setFilling(Filling filling) {
@@ -150,7 +130,7 @@ public class FillingDetailsViewModel extends ViewModel {
 	}
 
 	public boolean getComplete() {
-		return !mNewFilling;
+		return mFilling.getEndingTimestamp() > 0;
 	}
 
 	public TextWatcher getCodeValidator() {

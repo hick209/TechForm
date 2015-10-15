@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
 import finep.inovatec.app.CacheAgent;
@@ -24,13 +28,8 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 
 	public static final String KEY_VIEW_MODEL = "key.VIEW_MODEL";
 
-	public static final String EXTRA_ID   = "extra.ID";
-	public static final String EXTRA_NAME = "extra.NAME";
-
-	public static Intent newInstance(Context context, long id, String name) {
-		return new Intent(context, HomeActivity.class)
-				.putExtra(EXTRA_ID, id)
-				.putExtra(EXTRA_NAME, name);
+	public static Intent newInstance(Context context) {
+		return new Intent(context, HomeActivity.class);
 	}
 
 
@@ -41,9 +40,7 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mGroup = new Group();
-		mGroup.setId(getIntent().getLongExtra(EXTRA_ID, -1));
-		mGroup.setName(getIntent().getStringExtra(EXTRA_NAME));
+		mGroup = FormFillingManager.getInstance().getGroup();
 
 		if (savedInstanceState == null) {
 			mViewModel = new HomeViewModel(new FillingAdapter(this));
@@ -54,14 +51,13 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 		}
 
 		mViewModel.setCallbacks(this);
-		mViewModel.setToolbarTitle(mGroup.getName());
 
 		ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 		binding.setViewModel(mViewModel);
 
 		setupToolbar();
 		//noinspection ConstantConditions
-		getSupportActionBar().setTitle(mViewModel.getToolbarTitle());
+		getSupportActionBar().setTitle(mGroup.getName());
 	}
 
 	@Override
@@ -74,25 +70,25 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 	@Override
 	protected void onResume() {
 		super.onResume();
-		onRefresh();
+		loadData();
 	}
 
 	@Override
 	public void onRefresh() {
+		loadData();
+	}
+
+	private void loadData() {
 		mViewModel.setLoading(true);
 		final Handler handler = new Handler();
 		new Thread() {
 			@Override
 			public void run() {
+				final List<Filling> data = new ArrayList<>();
 				try {
 					CacheAgent cacheAgent = getTechFormApplication().getCacheAgent();
-					final List<Filling> data = cacheAgent.loadFillings(mGroup.getId());
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-							mViewModel.getAdapter().changeData(data);
-						}
-					});
+					Set<Filling> collection = cacheAgent.loadFillings(mGroup.getId());
+					data.addAll(collection);
 				}
 				catch (IOException ignored) {
 				}
@@ -100,6 +96,7 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
+						mViewModel.getAdapter().changeData(data);
 						mViewModel.setLoading(false);
 					}
 				});
@@ -109,12 +106,14 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 
 	@Override
 	public void newFilling() {
-		startActivity(FillingInfoActivity.newInstance(this, mGroup.getId()));
+		FormFillingManager.getInstance().setFilling(null);
+		startActivity(FillingInfoActivity.newInstance(this));
 	}
 
 	@Override
 	public void onItemClick(FillingAdapter adapter, Filling item) {
-		startActivity(FillingInfoActivity.newInstance(this, item));
+		FormFillingManager.getInstance().setFilling(item);
+		startActivity(FillingInfoActivity.newInstance(this));
 	}
 
 }

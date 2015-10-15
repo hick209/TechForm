@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
 import finep.inovatec.common.BasicListAdapter;
@@ -157,7 +158,8 @@ public class GroupListActivity extends BaseActivity
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Group group = mAdapter.getItem(position);
-		startActivity(HomeActivity.newInstance(this, group.getId(), group.getName()));
+		FormFillingManager.getInstance().setGroup(group);
+		startActivity(HomeActivity.newInstance(this));
 	}
 
 	private void showFileChooser() {

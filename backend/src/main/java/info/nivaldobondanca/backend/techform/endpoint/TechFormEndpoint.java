@@ -57,7 +57,7 @@ public class TechFormEndpoint {
 		try {
 			root = dataStore.get(rootKey);
 		} catch (EntityNotFoundException e) {
-//			root = new Startup(dataStore).run(false); // TODO
+//			root = new Startup(dataStore).run(false);
 			return Collections.emptyList();
 		}
 
@@ -67,7 +67,7 @@ public class TechFormEndpoint {
 
 		List<Group> groups = new ArrayList<>();
 		for (Key key : keys) {
-			Group g = Group.fromEntity(dataStore.get(key));
+			Group g = Group.fromEntity(dataStore, dataStore.get(key));
 			groups.add(g);
 		}
 

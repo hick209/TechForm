@@ -28,17 +28,22 @@
 		</activity>
 
 		<activity
-			android:name=".group.details.GroupDetailsActivity"
-			android:parentActivityName=".group.list.GroupListActivity"
-			android:screenOrientation="portrait"/>
-
-		<activity
 			android:name=".home.HomeActivity"
 			android:screenOrientation="portrait"/>
 
 		<activity
 			android:name=".filling.FillingInfoActivity"
 			android:parentActivityName=".home.HomeActivity"
+			android:screenOrientation="portrait"/>
+
+		<activity
+			android:name=".form.FormsActivity"
+			android:parentActivityName=".filling.FillingInfoActivity"
+			android:screenOrientation="portrait"/>
+
+		<activity
+			android:name=".group.details.GroupDetailsActivity"
+			android:parentActivityName=".group.list.GroupListActivity"
 			android:screenOrientation="portrait"/>
 
 		<activity

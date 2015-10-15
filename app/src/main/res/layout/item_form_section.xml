@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<import type="finep.inovatec.form.SectionItemViewModel"/>
+		<variable name="viewModel" type="SectionItemViewModel"/>
+	</data>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minHeight="48dp"
+		android:padding="16dp"
+		android:gravity="center_vertical"
+		android:text="@{viewModel.text}"
+		android:textAppearance="?android:textAppearanceLarge"
+		android:drawableEnd="@{viewModel.complete ? @drawable/ic_navigation_check_colored : null}"
+		tools:text="1 - Section"
+		tools:drawableEnd="@drawable/ic_navigation_check_colored"/>
+
+</layout>

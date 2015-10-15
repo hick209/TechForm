@@ -27,7 +27,6 @@ public class HomeViewModel extends ListViewModel implements SwipeRefreshLayout.O
 
 	private FillingAdapter mAdapter;
 	private HomeCallbacks  mCallbacks = DUMMY_CALLBACK;
-	private CharSequence   mToolbarTitle;
 
 	private View.OnClickListener mNewFilling = new View.OnClickListener() {
 		@Override
@@ -45,16 +44,6 @@ public class HomeViewModel extends ListViewModel implements SwipeRefreshLayout.O
 			callbacks = DUMMY_CALLBACK;
 		}
 		mCallbacks = callbacks;
-	}
-
-	@Bindable
-	public CharSequence getToolbarTitle() {
-		return mToolbarTitle;
-	}
-
-	public void setToolbarTitle(CharSequence toolbarTitle) {
-		mToolbarTitle = toolbarTitle;
-		notifyPropertyChanged(BR.toolbarTitle);
 	}
 
 	@Override
