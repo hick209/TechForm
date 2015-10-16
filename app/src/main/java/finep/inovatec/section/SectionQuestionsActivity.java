@@ -54,7 +54,7 @@ public class SectionQuestionsActivity extends BaseActivity {
 		Form form = group.getForms().get(mFormPosition);
 		FormSection section = form.getSections().get(mSectionPosition);
 
-		setupToolbar(manager, group);
+		setupToolbar(manager, section);
 		setupViewPager(form, section);
 	}
 
@@ -75,14 +75,14 @@ public class SectionQuestionsActivity extends BaseActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void setupToolbar(FormFillingManager manager, Group group) {
+	private void setupToolbar(FormFillingManager manager, FormSection section) {
 		Filling filling = manager.getFilling();
 		CharSequence subtitle = String.format("%s - %s", filling.getCode(), filling.getAddress());
 
 		setupToolbar();
 		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle(group.getName());
+		getSupportActionBar().setTitle(section.getName());
 		getSupportActionBar().setSubtitle(subtitle);
 	}
 
