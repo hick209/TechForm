@@ -1,19 +1,17 @@
-package finep.inovatec.question;
+package finep.inovatec.section;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import org.json.JSONException;
-
+import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
-import finep.inovatec.util.ParseUtils;
+import finep.inovatec.databinding.FragmentQuestionBinding;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 
 /**
@@ -21,12 +19,18 @@ import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
  */
 public abstract class QuestionFragment extends Fragment {
 
-	private static final String ARG_QUESTION = "arg.QUESTION";
+	private static final String ARG_FORM_POSITION     = "arg.FORM_POSITION";
+	private static final String ARG_SECTION_POSITION  = "arg.SECTION_POSITION";
+	private static final String ARG_QUESTION_POSITION = "arg.QUESTION_POSITION";
 
-	public static QuestionFragment instantiate(FormQuestion question) {
+	public static QuestionFragment instantiate(int formPosition, int sectionPosition, int questionPosition) {
 		Bundle args = new Bundle();
-		// FIXME question.toString() not behaving as it should!!!
-		args.putString(ARG_QUESTION, ParseUtils.toJSONString(question));
+		args.putInt(ARG_FORM_POSITION, formPosition);
+		args.putInt(ARG_SECTION_POSITION, sectionPosition);
+		args.putInt(ARG_QUESTION_POSITION, questionPosition);
+
+		Form form = FormFillingManager.getInstance().getGroup().getForms().get(formPosition);
+		FormQuestion question = form.getSections().get(sectionPosition).getQuestions().get(questionPosition);
 
 		QuestionFragment fragment = getQuestionFragment(question.getType());
 		fragment.setArguments(args);
@@ -51,52 +55,48 @@ public abstract class QuestionFragment extends Fragment {
 		return fragment;
 	}
 
+	private int mFormPosition;
+	private int mSectionPosition;
+	private int mQuestionPosition;
+
 	private FormQuestion mQuestion;
+	private QuestionViewModel mViewModel;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		try {
-			String json = getArguments().getString(ARG_QUESTION);
-			mQuestion = ParseUtils.parseQuestionJSON(json);
-		} catch (JSONException e) {
-			throw new RuntimeException(e);
-		}
+		Bundle args = getArguments();
+		mFormPosition = args.getInt(ARG_FORM_POSITION);
+		mSectionPosition = args.getInt(ARG_SECTION_POSITION);
+		mQuestionPosition = args.getInt(ARG_QUESTION_POSITION);
+
+		Form form = FormFillingManager.getInstance().getGroup().getForms().get(mFormPosition);
+		mQuestion = form.getSections().get(mSectionPosition).getQuestions().get(mQuestionPosition);
+
+		mViewModel = new QuestionViewModel(mQuestion);
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_question, container, false);
+		FragmentQuestionBinding binding = FragmentQuestionBinding.inflate(inflater, container, false);
+		binding.setViewModel(mViewModel);
+
+		return binding.getRoot();
 	}
 
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		((TextView) view.findViewById(R.id.question_text)).setText(getQuestion().getText());
-		setTextAndVisibility(view, R.id.question_observation, getQuestion().getObservation());
-		setTextAndVisibility(view, R.id.question_hint, getQuestion().getHint());
-
-		SectionQuestionsActivity activity = (SectionQuestionsActivity) getActivity();
 
 		ViewGroup content = (ViewGroup) view.findViewById(R.id.question_content);
-		View contentView = getContentView(LayoutInflater.from(activity), content);
+		View contentView = getContentView(LayoutInflater.from(getContext()), content);
 		if (contentView != null) {
 			content.addView(contentView);
 		}
-
-		view.findViewById(R.id.question_next).setOnClickListener(activity);
 	}
 
 	protected abstract View getContentView(LayoutInflater inflater, ViewGroup container);
-
-	private void setTextAndVisibility(View view, @IdRes int id, String observation) {
-		if (!TextUtils.isEmpty(observation)) {
-			TextView textView = (TextView) view.findViewById(id);
-			textView.setText(observation);
-			textView.setVisibility(View.VISIBLE);
-		}
-	}
 
 	public FormQuestion getQuestion() {
 		return mQuestion;

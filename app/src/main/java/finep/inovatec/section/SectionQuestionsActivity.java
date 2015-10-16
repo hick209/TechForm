@@ -1,4 +1,4 @@
-package finep.inovatec.question;
+package finep.inovatec.section;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.List;
 
@@ -35,22 +37,42 @@ public class SectionQuestionsActivity extends BaseActivity {
 		return intent;
 	}
 
+	private int mFormPosition;
+	private int mSectionPosition;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_section_questions);
 		Bundle extras = getIntent().getExtras();
 
-		int formPosition = extras.getInt(EXTRA_FORM_POSITION);
-		int sectionPosition = extras.getInt(EXTRA_SECTION_POSITION);
+		mFormPosition = extras.getInt(EXTRA_FORM_POSITION);
+		mSectionPosition = extras.getInt(EXTRA_SECTION_POSITION);
 
 		FormFillingManager manager = FormFillingManager.getInstance();
 		Group group = manager.getGroup();
-		Form form = group.getForms().get(formPosition);
-		FormSection section = form.getSections().get(sectionPosition);
+		Form form = group.getForms().get(mFormPosition);
+		FormSection section = form.getSections().get(mSectionPosition);
 
 		setupToolbar(manager, group);
-		setupViewPager(sectionPosition, form, section);
+		setupViewPager(form, section);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_section_questions, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_done:
+				// TODO
+				finish();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void setupToolbar(FormFillingManager manager, Group group) {
@@ -64,8 +86,8 @@ public class SectionQuestionsActivity extends BaseActivity {
 		getSupportActionBar().setSubtitle(subtitle);
 	}
 
-	private void setupViewPager(int sectionPosition, Form form, FormSection section) {
-		QuestionsAdapter adapter = new QuestionsAdapter(section, getSectionCode(form, sectionPosition));
+	private void setupViewPager(Form form, FormSection section) {
+		QuestionsAdapter adapter = new QuestionsAdapter(section, getSectionCode(form, mSectionPosition));
 
 		ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(adapter);
@@ -101,7 +123,7 @@ public class SectionQuestionsActivity extends BaseActivity {
 			mFragments = new Fragment[mQuestions.size()];
 
 			for (int i = 0; i < mFragments.length; i++) {
-				mFragments[i] = QuestionFragment.instantiate(mQuestions.get(i));
+				mFragments[i] = QuestionFragment.instantiate(mFormPosition, mSectionPosition, i);
 			}
 		}
 

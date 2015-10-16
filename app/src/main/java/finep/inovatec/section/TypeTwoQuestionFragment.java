@@ -1,4 +1,4 @@
-package finep.inovatec.question;
+package finep.inovatec.section;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +9,9 @@ import finep.inovatec.R;
 /**
  * @author Nivaldo Bondança
  */
-public class TypeOneQuestionFragment extends QuestionFragment {
-
+public class TypeTwoQuestionFragment extends QuestionFragment {
 	@Override
 	protected View getContentView(LayoutInflater inflater, ViewGroup container) {
-		return inflater.inflate(R.layout.fragment_question_type_one, container, false);
+		return inflater.inflate(R.layout.fragment_question_type_two, container, false);
 	}
-
 }

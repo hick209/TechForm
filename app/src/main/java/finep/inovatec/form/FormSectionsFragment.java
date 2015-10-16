@@ -14,7 +14,7 @@ import finep.inovatec.common.BaseFragment;
 import finep.inovatec.common.BasicListAdapter;
 import finep.inovatec.databinding.FragmentFormSectionsBinding;
 import finep.inovatec.databinding.ItemFormSectionBinding;
-import finep.inovatec.question.SectionQuestionsActivity;
+import finep.inovatec.section.SectionQuestionsActivity;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
 

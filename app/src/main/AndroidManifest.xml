@@ -42,15 +42,8 @@
 			android:screenOrientation="portrait"/>
 
 		<activity
-			android:name=".group.details.GroupDetailsActivity"
-			android:parentActivityName=".group.GroupListActivity"
+			android:name=".section.SectionQuestionsActivity"
+			android:parentActivityName=".form.FormsActivity"
 			android:screenOrientation="portrait"/>
-
-		<activity
-			android:name=".question.SectionQuestionsActivity"
-			android:parentActivityName=".group.details.GroupDetailsActivity"
-			android:screenOrientation="portrait"/>
-
 	</application>
-
 </manifest>

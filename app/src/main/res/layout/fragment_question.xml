@@ -1,53 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:paddingTop="@dimen/activity_vertical_margin"
-	android:paddingLeft="@dimen/activity_horizontal_margin"
-	android:paddingBottom="@dimen/activity_vertical_margin"
-	android:paddingRight="@dimen/activity_horizontal_margin"
-	android:orientation="vertical">
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
 
-	<TextView
-		android:id="@+id/question_text"
+	<data>
+		<import type="android.text.TextUtils"/>
+		<import type="android.view.View"/>
+		<import type="finep.inovatec.section.QuestionViewModel"/>
+
+		<variable name="viewModel" type="QuestionViewModel"/>
+	</data>
+
+	<ScrollView
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Question"
-		android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+		android:layout_height="match_parent"
+		android:paddingTop="@dimen/activity_vertical_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:clipToPadding="false">
 
-	<TextView
-		android:id="@+id/question_observation"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Observation"
-		android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-		android:visibility="gone"/>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
 
-	<View
-		android:layout_width="match_parent"
-		android:layout_height="1dp"
-		android:layout_marginTop="8dp"
-		android:layout_marginBottom="8dp"
-		android:background="@color/app_primary"/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@{viewModel.text}"
+				android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+				tools:text="Question"/>
 
-	<TextView
-		android:id="@+id/question_hint"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Hint"
-		android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-		android:visibility="gone"/>
+			<TextView
+				android:id="@+id/question_observation"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@{viewModel.observation}"
+				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				android:visibility="@{TextUtils.isEmpty(viewModel.observation) ? View.GONE : View.VISIBLE}"
+				tools:text="Observation"/>
 
-	<FrameLayout
-		android:id="@+id/question_content"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"/>
+			<!-- Divider -->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginTop="8dp"
+				android:layout_marginBottom="8dp"
+				android:background="@color/app_primary"/>
 
-	<Button
-		android:id="@+id/question_next"
-		android:layout_width="wrap_content"
-		android:layout_height="48dp"
-		android:layout_gravity="end"
-		android:visibility="invisible"/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@{viewModel.hint}"
+				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+				android:visibility="@{TextUtils.isEmpty(viewModel.hint) ? View.GONE : View.VISIBLE}"
+				tools:text="Hint"/>
 
-</LinearLayout>
+			<FrameLayout
+				android:id="@+id/question_content"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+		</LinearLayout>
+	</ScrollView>
+
+</layout>
