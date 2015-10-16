@@ -1,9 +1,8 @@
-package finep.inovatec.group;
+package finep.inovatec.api;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import finep.inovatec.api.TechFormApiCaller;
 import finep.inovatec.content.ApiCall;
 import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;
 

@@ -1,4 +1,4 @@
-package finep.inovatec.group.list;
+package finep.inovatec.group;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.AdapterView;

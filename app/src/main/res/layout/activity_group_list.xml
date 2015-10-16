@@ -5,7 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-		<import type="finep.inovatec.group.list.GroupListViewModel"/>
+		<import type="finep.inovatec.group.GroupListViewModel"/>
 		<import type="android.view.View"/>
 
 		<variable name="viewModel" type="GroupListViewModel"/>

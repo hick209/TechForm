@@ -1,21 +1,22 @@
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.android.databinding'
 
 android {
 	compileSdkVersion 23
-	buildToolsVersion "23.0.1"
+	buildToolsVersion '23.0.1'
 
 	defaultConfig {
-		applicationId "finep.inovatec"
+		applicationId 'finep.inovatec'
 		minSdkVersion 17
 		targetSdkVersion 23
 		versionCode 1
-		versionName "1.0"
+		versionName '1.0'
 	}
 	buildTypes {
 		debug {
-			versionNameSuffix ".debug"
-			applicationIdSuffix ".debug"
+			versionNameSuffix '.debug'
+			applicationIdSuffix '.debug'
 		}
 		release {
 			minifyEnabled false
@@ -29,9 +30,9 @@ dependencies {
 	// Backend
 	compile project(path: ':backend', configuration: 'android-endpoints')
 	// Support
-	compile 'com.android.support:appcompat-v7:23.0.1'
-	compile 'com.android.support:cardview-v7:23.0.1'
-	compile 'com.android.support:design:23.0.1'
+	compile 'com.android.support:appcompat-v7:23.1.0'
+	compile 'com.android.support:cardview-v7:23.1.0'
+	compile 'com.android.support:design:23.1.0'
 	// GSON
 	compile 'com.google.code.gson:gson:2.3'
 }

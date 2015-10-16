@@ -18,7 +18,7 @@
 		tools:ignore="UnusedAttribute">
 
 		<activity
-			android:name=".group.list.GroupListActivity"
+			android:name=".group.GroupListActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait">
 			<intent-filter>
@@ -43,7 +43,7 @@
 
 		<activity
 			android:name=".group.details.GroupDetailsActivity"
-			android:parentActivityName=".group.list.GroupListActivity"
+			android:parentActivityName=".group.GroupListActivity"
 			android:screenOrientation="portrait"/>
 
 		<activity

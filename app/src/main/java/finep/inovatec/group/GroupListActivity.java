@@ -1,4 +1,4 @@
-package finep.inovatec.group.list;
+package finep.inovatec.group;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -39,7 +39,7 @@ import finep.inovatec.content.ApiCall;
 import finep.inovatec.content.ListLoaderCallback;
 import finep.inovatec.databinding.ActivityGroupListBinding;
 import finep.inovatec.databinding.ItemGroupBinding;
-import finep.inovatec.group.ApiCaller;
+import finep.inovatec.api.ApiCaller;
 import finep.inovatec.home.HomeActivity;
 import finep.inovatec.util.ParseUtils;
 import info.nivaldobondanca.backend.techform.techFormAPI.TechFormAPI;

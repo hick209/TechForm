@@ -7,35 +7,31 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import org.json.JSONException;
-
 import java.util.List;
 
+import finep.inovatec.FormFillingManager;
+import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
-import finep.inovatec.R;
-import finep.inovatec.util.ParseUtils;
-import finep.inovatec.util.Utils;
 
 /**
  * @author Nivaldo Bondança
  */
 public class SectionQuestionsActivity extends BaseActivity implements View.OnClickListener {
 
-	private static final String EXTRA_FORM             = "extra.FORM";
+	private static final String EXTRA_FORM_POSITION    = "extra.FORM_POSITION";
 	private static final String EXTRA_SECTION_POSITION = "extra.SECTION_POSITION";
 
 	private ViewPager mViewPager;
 
-	public static Intent newInstance(Context c, Form form, int sectionPosition) {
+	public static Intent newInstance(Context c, int formPosition, int sectionPosition) {
 		Intent intent = new Intent(c, SectionQuestionsActivity.class);
-		intent.putExtra(EXTRA_FORM, form.toString());
+		intent.putExtra(EXTRA_FORM_POSITION, formPosition);
 		intent.putExtra(EXTRA_SECTION_POSITION, sectionPosition);
 
 		return intent;
@@ -47,34 +43,22 @@ public class SectionQuestionsActivity extends BaseActivity implements View.OnCli
 		setContentView(R.layout.activity_section_questions);
 		Bundle extras = getIntent().getExtras();
 
-		String formJSON = extras.getString(EXTRA_FORM);
-		int currentSection = extras.getInt(EXTRA_SECTION_POSITION);
+		int formPosition = extras.getInt(EXTRA_FORM_POSITION);
+		int sectionPosition = extras.getInt(EXTRA_SECTION_POSITION);
 
-		Form form;
-		try {
-			form = ParseUtils.parseFormJSON(formJSON);
-		} catch (JSONException e) {
-			throw new RuntimeException(e);
-		}
+		Form form = FormFillingManager.getInstance().getGroup().getForms().get(formPosition);
 
 		Toolbar toolbar = setupToolbar();
-		String sectionCode = getSectionCode(form, currentSection);
+		String sectionCode = getSectionCode(form, sectionPosition);
 		toolbar.setTitle(sectionCode);
 
 		QuestionsAdapter adapter = new QuestionsAdapter(
-				form.getSections().get(currentSection), sectionCode);
+				form.getSections().get(sectionPosition), sectionCode);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(adapter);
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-
 		tabLayout.setupWithViewPager(mViewPager);
-		findViewById(R.id.pager).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(SectionQuestionsActivity.this, finep.inovatec.group.details.GroupDetailsActivity.class));
-			}
-		});
 	}
 
 	private String getSectionCode(Form form, int section) {

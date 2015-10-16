@@ -1,20 +1,11 @@
 package finep.inovatec;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import finep.inovatec.app.CacheAgent;
 import finep.inovatec.data.Filling;
-import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
-import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
-import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
 /**
@@ -33,8 +24,8 @@ public class FormFillingManager {
 	}
 
 
-	private Filling    mFilling;
 	private CacheAgent mCacheAgent;
+	private Filling    mFilling;
 	private Group      mGroup;
 
 	private FormFillingManager(CacheAgent cacheAgent) {
