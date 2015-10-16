@@ -11,10 +11,11 @@
             {
               "codeName": "string",
               "text": "string",
-              "hint": "string",
-              "observation": "string",
+              "hint": "string?",
+              "observation": "string?",
               "options": [
                 {
+                  "title": "string?",
                   "selection": "single | multiple",
                   "items": ["string"]
                 }

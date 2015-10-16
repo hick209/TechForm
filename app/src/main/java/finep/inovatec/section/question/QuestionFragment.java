@@ -1,23 +1,28 @@
-package finep.inovatec.section;
+package finep.inovatec.section.question;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import finep.inovatec.FormFillingManager;
-import finep.inovatec.R;
+import finep.inovatec.databinding.CellQuestionOptionMultipleBinding;
+import finep.inovatec.databinding.CellQuestionOptionSingleBinding;
 import finep.inovatec.databinding.FragmentQuestionBinding;
+import finep.inovatec.databinding.ItemCheckboxBinding;
+import finep.inovatec.databinding.ItemRadioButtonBinding;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestionOption;
 
 /**
  * @author Nivaldo Bondança
  */
-public abstract class QuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment {
 
 	private static final String ARG_FORM_POSITION     = "arg.FORM_POSITION";
 	private static final String ARG_SECTION_POSITION  = "arg.SECTION_POSITION";
@@ -29,29 +34,9 @@ public abstract class QuestionFragment extends Fragment {
 		args.putInt(ARG_SECTION_POSITION, sectionPosition);
 		args.putInt(ARG_QUESTION_POSITION, questionPosition);
 
-		Form form = FormFillingManager.getInstance().getGroup().getForms().get(formPosition);
-		FormQuestion question = form.getSections().get(sectionPosition).getQuestions().get(questionPosition);
-
-		QuestionFragment fragment = getQuestionFragment(question.getType());
+		QuestionFragment fragment = new QuestionFragment();
 		fragment.setArguments(args);
 
-		return fragment;
-	}
-
-	private static QuestionFragment getQuestionFragment(int type) {
-		QuestionFragment fragment;
-		switch (type) {
-			case 1:
-				fragment = new TypeOneQuestionFragment();
-				break;
-
-			case 2:
-				fragment = new TypeTwoQuestionFragment();
-				break;
-
-			default:
-				throw new IllegalArgumentException("Question type not yet implemented!");
-		}
 		return fragment;
 	}
 
@@ -82,23 +67,50 @@ public abstract class QuestionFragment extends Fragment {
 		FragmentQuestionBinding binding = FragmentQuestionBinding.inflate(inflater, container, false);
 		binding.setViewModel(mViewModel);
 
+		View view = binding.getRoot();
+		ViewGroup content = binding.questionContent;
+
+		List<FormQuestionOption> options = mQuestion.getOptions();
+		for (FormQuestionOption option : options) {
+			switch (option.getSelection()) {
+				case "single":
+					content.addView(inflateSingleSelection(inflater, content, option));
+					break;
+
+				case "multiple":
+					content.addView(inflateMultipleSelection(inflater, content, option));
+					break;
+			}
+		}
+
+		return view;
+	}
+
+	private View inflateSingleSelection(LayoutInflater inflater, ViewGroup parent, FormQuestionOption option) {
+		CellQuestionOptionSingleBinding binding = CellQuestionOptionSingleBinding.inflate(inflater, parent, false);
+		binding.setTitle(option.getTitle());
+
+		List<String> items = option.getItems();
+		for (int i = 0; i < items.size(); i++) {
+			ItemRadioButtonBinding itemBinding = ItemRadioButtonBinding.inflate(inflater, binding.container, true);
+			itemBinding.setId(i);
+			itemBinding.setText(items.get(i));
+		}
+
 		return binding.getRoot();
 	}
 
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+	private View inflateMultipleSelection(LayoutInflater inflater, ViewGroup parent, FormQuestionOption option) {
+		CellQuestionOptionMultipleBinding binding = CellQuestionOptionMultipleBinding.inflate(inflater, parent, false);
+		binding.setTitle(option.getTitle());
 
-		ViewGroup content = (ViewGroup) view.findViewById(R.id.question_content);
-		View contentView = getContentView(LayoutInflater.from(getContext()), content);
-		if (contentView != null) {
-			content.addView(contentView);
+		List<String> items = option.getItems();
+		for (int i = 0; i < items.size(); i++) {
+			ItemCheckboxBinding itemBinding = ItemCheckboxBinding.inflate(inflater, binding.container, true);
+			itemBinding.setId(i);
+			itemBinding.setText(items.get(i));
 		}
-	}
 
-	protected abstract View getContentView(LayoutInflater inflater, ViewGroup container);
-
-	public FormQuestion getQuestion() {
-		return mQuestion;
+		return binding.getRoot();
 	}
 }

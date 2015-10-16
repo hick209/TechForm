@@ -6,7 +6,7 @@
 	<data>
 		<import type="android.text.TextUtils"/>
 		<import type="android.view.View"/>
-		<import type="finep.inovatec.section.QuestionViewModel"/>
+		<import type="finep.inovatec.section.question.QuestionViewModel"/>
 
 		<variable name="viewModel" type="QuestionViewModel"/>
 	</data>
@@ -61,6 +61,8 @@
 				android:id="@+id/question_content"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
+
+			
 		</LinearLayout>
 	</ScrollView>
 

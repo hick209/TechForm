@@ -1,4 +1,4 @@
-package finep.inovatec.section;
+package finep.inovatec.section.question;
 
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 
