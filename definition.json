@@ -1,0 +1,71 @@
+{
+  "forms": [
+    {
+      "codeName": "string",
+      "name": "string",
+      "sections": [
+        {
+          "codeName": "string",
+          "name": "string",
+          "questions": [
+            {
+              "codeName": "string",
+              "text": "string",
+              "hint": "string",
+              "observation": "string",
+              "options": [
+                {
+                  "selection": "single | multiple",
+                  "items": ["string"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+// TODO fazer isso
+// Depois de preenchido
+//  -> Dados adicionais
+
+{
+  "name": "...",
+  "fill_date": {
+    "start": "yyyy-MM-dd",
+    "end": "yyyy-MM-dd"
+  },
+  "id": "?",
+  "construction_company": "?",
+  "team": "?",
+  "site": {
+    "address": "...",
+    "number": 123,
+    "complement": "",
+    "zipcode": "12345-789",
+    "city": "...",
+    "state": "...",
+    "country": "..."
+  },
+  "forms": [
+    {
+      "code": 1,
+      "sections": [
+        {
+          "code": 1,
+          "questions": [
+            {
+              "notes": "...",
+              "images": [
+                "path/to/image1.png",
+                "path/to/image2.jpg"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

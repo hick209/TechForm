@@ -11,10 +11,20 @@
 					"questions": [
 						{
 							"code": 1,
-							"type": 1,
 							"text": "As fissuras existentes são menores ou iguais aos valores máximos estipulados para o sistema aplicado",
 							"observation": "Indicar as medidas das fissuras",
-							"hint": "Usar fissurômetro"
+							"hint": "Usar fissurômetro",
+                            "options": [
+                              {
+                                "selection": "single",
+                                "items": [
+                                  "Atende",
+                                  "Não atende",
+                                  "Não se aplica",
+                                  "Não verificado"
+                                ]
+                              }
+                            ],
 						},
 						{
 							"code": 2,

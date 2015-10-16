@@ -10,6 +10,8 @@ import com.google.appengine.repackaged.org.codehaus.jackson.node.ArrayNode;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.nivaldobondanca.backend.techform.model.FormQuestionOption;
+
 /**
  * @author Nivaldo Bondança
  */
@@ -133,21 +135,70 @@ public class NewData {
 		String text = json.get("text").asText();
 		entity.setProperty("text", text);
 
-		int type = json.get("type").asInt();
-		entity.setProperty("type", type);
-
-		if (json.has("observation")) {
-			String observation = json.get("observation").asText();
-			entity.setProperty("observation", observation);
-		}
+		String codeName = json.get("codeName").asText();
+		entity.setProperty("codeName", codeName);
 
 		if (json.has("hint")) {
 			String hint = json.get("hint").asText();
 			entity.setProperty("hint", hint);
 		}
 
-		String codeName = json.get("codeName").asText();
-		entity.setProperty("codeName", codeName);
+		if (json.has("observation")) {
+			String observation = json.get("observation").asText();
+			entity.setProperty("observation", observation);
+		}
+
+		Key key = mDataStore.put(entity);
+
+		ArrayNode nodes = (ArrayNode) json.get("options");
+		List<Key> keys = new ArrayList<>(nodes.size());
+
+		for (JsonNode node : nodes) {
+			Key k = processQuestionOption(key, node);
+			keys.add(k);
+		}
+
+		entity.setProperty("options", keys);
+
+		mDataStore.put(entity);
+
+		return key;
+	}
+
+	private Key processQuestionOption(Key parent, JsonNode json) {
+		Entity entity = new Entity("QuestionOption", parent);
+
+		if (json.has("title")) {
+			String title = json.get("title").asText();
+			entity.setProperty("title", title);
+		}
+
+		String text = json.get("selection").asText();
+		entity.setProperty("selection", text);
+
+		// This will throw an error in case the value is not correct
+		FormQuestionOption.Selection.valueOf(text.toUpperCase());
+
+		Key key = mDataStore.put(entity);
+
+		ArrayNode nodes = (ArrayNode) json.get("items");
+		List<Key> keys = new ArrayList<>(nodes.size());
+
+		for (JsonNode node : nodes) {
+			Key k = processQuestionOptionItem(key, node.asText());
+			keys.add(k);
+		}
+
+		entity.setProperty("options", keys);
+
+		mDataStore.put(entity);
+
+		return key;
+	}
+
+	private Key processQuestionOptionItem(Key parent, String value) {
+		Entity entity = new Entity("QuestionOptionItem", parent);
+		entity.setProperty("value", value);
 
 		return mDataStore.put(entity);
 	}
