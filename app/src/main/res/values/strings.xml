@@ -29,6 +29,8 @@
 	<string name="hint_beginningTimestamp">Início</string>
 	<string name="hint_endingTimestamp">Fim</string>
 
+	<string name="hint_additionalInfo">Observações</string>
+
 	<!-- Message -->
 	<string name="message_noFileChooser">Primeiro instale um gerenciador de arquivos.</string>
 	<string name="message_ioError">Erro, verifique sua conexão.</string>
