@@ -56,14 +56,14 @@ public class FillingInfoActivity extends BaseActivity implements DatePickerDialo
 
 		binding.setViewModel(mViewModel);
 
-		CharSequence title = newFilling ? getText(R.string.title_toolbar_newFilling) :
+		CharSequence subtitle = newFilling ? getText(R.string.title_toolbar_newFilling) :
 				String.format("%s - %s", filling.getCode(), filling.getAddress());
 
 		setupToolbar();
 		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle(title);
-		getSupportActionBar().setSubtitle(fillingManager.getGroup().getName());
+		getSupportActionBar().setTitle(fillingManager.getGroup().getName());
+		getSupportActionBar().setSubtitle(subtitle);
 	}
 
 	@Override

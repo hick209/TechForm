@@ -53,13 +53,13 @@ public class FormsActivity extends BaseActivity {
 	@Override
 	public Toolbar setupToolbar() {
 		Filling filling = mFillingManager.getFilling();
-		CharSequence title = String.format("%s - %s", filling.getCode(), filling.getAddress());
+		CharSequence subtitle = String.format("%s - %s", filling.getCode(), filling.getAddress());
 
 		Toolbar toolbar = super.setupToolbar();
 		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle(title);
-		getSupportActionBar().setSubtitle(mFillingManager.getGroup().getName());
+		getSupportActionBar().setTitle(mFillingManager.getGroup().getName());
+		getSupportActionBar().setSubtitle(subtitle);
 
 		return toolbar;
 	}

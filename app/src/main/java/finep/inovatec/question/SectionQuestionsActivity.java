@@ -7,27 +7,25 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import java.util.List;
 
 import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
+import finep.inovatec.data.Filling;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
 /**
  * @author Nivaldo Bondança
  */
-public class SectionQuestionsActivity extends BaseActivity implements View.OnClickListener {
+public class SectionQuestionsActivity extends BaseActivity {
 
 	private static final String EXTRA_FORM_POSITION    = "extra.FORM_POSITION";
 	private static final String EXTRA_SECTION_POSITION = "extra.SECTION_POSITION";
-
-	private ViewPager mViewPager;
 
 	public static Intent newInstance(Context c, int formPosition, int sectionPosition) {
 		Intent intent = new Intent(c, SectionQuestionsActivity.class);
@@ -46,19 +44,33 @@ public class SectionQuestionsActivity extends BaseActivity implements View.OnCli
 		int formPosition = extras.getInt(EXTRA_FORM_POSITION);
 		int sectionPosition = extras.getInt(EXTRA_SECTION_POSITION);
 
-		Form form = FormFillingManager.getInstance().getGroup().getForms().get(formPosition);
+		FormFillingManager manager = FormFillingManager.getInstance();
+		Group group = manager.getGroup();
+		Form form = group.getForms().get(formPosition);
+		FormSection section = form.getSections().get(sectionPosition);
 
-		Toolbar toolbar = setupToolbar();
-		String sectionCode = getSectionCode(form, sectionPosition);
-		toolbar.setTitle(sectionCode);
+		setupToolbar(manager, group);
+		setupViewPager(sectionPosition, form, section);
+	}
 
-		QuestionsAdapter adapter = new QuestionsAdapter(
-				form.getSections().get(sectionPosition), sectionCode);
+	private void setupToolbar(FormFillingManager manager, Group group) {
+		Filling filling = manager.getFilling();
+		CharSequence subtitle = String.format("%s - %s", filling.getCode(), filling.getAddress());
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(adapter);
+		setupToolbar();
+		//noinspection ConstantConditions
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle(group.getName());
+		getSupportActionBar().setSubtitle(subtitle);
+	}
+
+	private void setupViewPager(int sectionPosition, Form form, FormSection section) {
+		QuestionsAdapter adapter = new QuestionsAdapter(section, getSectionCode(form, sectionPosition));
+
+		ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager.setAdapter(adapter);
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-		tabLayout.setupWithViewPager(mViewPager);
+		tabLayout.setupWithViewPager(viewPager);
 	}
 
 	private String getSectionCode(Form form, int section) {
@@ -70,17 +82,6 @@ public class SectionQuestionsActivity extends BaseActivity implements View.OnCli
 		return formCode + "." + sectionCode;
 	}
 
-	@Override
-	public void onClick(View v) {
-		// Next question
-		int nextItem = mViewPager.getCurrentItem() + 1;
-		if (nextItem < mViewPager.getAdapter().getCount()) {
-			mViewPager.setCurrentItem(nextItem);
-		}
-		else {
-			// TODO go to the summary
-		}
-	}
 
 	class QuestionsAdapter extends FragmentPagerAdapter {
 
