@@ -72,7 +72,7 @@ public class QuestionFragment extends Fragment {
 
 		List<FormQuestionOption> options = mQuestion.getOptions();
 		for (FormQuestionOption option : options) {
-			switch (option.getSelection()) {
+			switch (option.getSelection().toLowerCase()) {
 				case "single":
 					content.addView(inflateSingleSelection(inflater, content, option));
 					break;

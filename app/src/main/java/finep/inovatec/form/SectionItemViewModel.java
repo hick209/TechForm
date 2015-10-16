@@ -18,7 +18,7 @@ public class SectionItemViewModel {
 	}
 
 	public boolean getComplete() {
-		return mFormSection.getQuestions().size() % 2 == 0;
+		return true; // TODO
 	}
 
 }

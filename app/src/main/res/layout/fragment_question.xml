@@ -33,7 +33,6 @@
 				tools:text="Question"/>
 
 			<TextView
-				android:id="@+id/question_observation"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@{viewModel.observation}"
@@ -62,7 +61,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
 
-			
+			<!-- Input + Photo -->
 		</LinearLayout>
 	</ScrollView>
 

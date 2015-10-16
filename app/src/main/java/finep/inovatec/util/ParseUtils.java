@@ -9,6 +9,7 @@ import java.util.List;
 
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
+import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestionOption;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormSection;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
@@ -78,9 +79,47 @@ public class ParseUtils {
 		data.setId(json.optLong("id"));
 		data.setCodeName(json.optString("codeName"));
 		data.setText(json.getString("text"));
-		data.setType(json.getInt("type"));
 		data.setObservation(json.optString("observation"));
 		data.setHint(json.optString("hint"));
+
+		JSONArray options = json.getJSONArray("options");
+		List<FormQuestionOption> list = new ArrayList<>();
+		for (int i = 0; i < options.length(); i++) {
+			FormQuestionOption item = parseQuestionOptionJSON(options.getJSONObject(i).toString());
+			list.add(item);
+		}
+
+		data.setOptions(list);
+
+		return data;
+	}
+
+	private static FormQuestionOption parseQuestionOptionJSON(String jsonString) throws JSONException {
+		FormQuestionOption data = new FormQuestionOption();
+
+		JSONObject json = new JSONObject(jsonString);
+		data.setId(json.optLong("id"));
+		data.setTitle(json.optString("title"));
+
+		String selection = json.optString("selection");
+		switch (selection) {
+			case "single":
+			case "multiple":
+				data.setSelection(selection);
+				break;
+
+			default:
+				throw new JSONException("Invalid type '" + selection + "' for field \"selection\"");
+		}
+
+		JSONArray items = json.getJSONArray("items");
+		List<String> list = new ArrayList<>();
+		for (int i = 0; i < items.length(); i++) {
+			String item = items.getString(i);
+			list.add(item);
+		}
+
+		data.setItems(list);
 
 		return data;
 	}

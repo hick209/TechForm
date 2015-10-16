@@ -25,8 +25,8 @@
 				android:id="@+id/toolbar"
 				android:layout_width="match_parent"
 				android:layout_height="?attr/actionBarSize"
-				app:layout_scrollFlags="scroll|enterAlways"
-				app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+				app:layout_scrollFlags="scroll|enterAlways"/>
 		</android.support.design.widget.AppBarLayout>
 
 		<ViewSwitcher
