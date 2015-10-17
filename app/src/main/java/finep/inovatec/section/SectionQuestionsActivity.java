@@ -16,6 +16,8 @@ import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
 import finep.inovatec.data.Filling;
+import finep.inovatec.data.FillingForm;
+import finep.inovatec.data.FillingFormSection;
 import finep.inovatec.section.question.QuestionFragment;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
@@ -40,6 +42,7 @@ public class SectionQuestionsActivity extends BaseActivity {
 
 	private int mFormPosition;
 	private int mSectionPosition;
+	private FillingFormSection mFormSection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,8 @@ public class SectionQuestionsActivity extends BaseActivity {
 
 		setupToolbar(manager, section);
 		setupViewPager(form, section);
+
+		setupFilling(manager, form, section);
 	}
 
 	@Override
@@ -69,7 +74,13 @@ public class SectionQuestionsActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_done:
-				// TODO
+				Filling filling = FormFillingManager.getInstance().getFilling();
+				String codeName = filling.getForms().get(mFormPosition).getCodeName();
+				FillingForm form = filling.getForm(codeName);
+				form.putSection(mFormSection);
+
+				FormFillingManager.getInstance().save();
+
 				finish();
 				break;
 		}
@@ -96,6 +107,11 @@ public class SectionQuestionsActivity extends BaseActivity {
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
+	private void setupFilling(FormFillingManager manager, Form form, FormSection section) {
+		FillingForm fillingForm = manager.getFilling().getForm(form.getCodeName());
+		mFormSection = fillingForm.getSection(section.getCodeName());
+	}
+
 	private String getSectionCode(Form form, int section) {
 		FormSection formSection = form.getSections().get(section);
 
@@ -105,6 +121,9 @@ public class SectionQuestionsActivity extends BaseActivity {
 		return formCode + "." + sectionCode;
 	}
 
+	public FillingFormSection getFormSection() {
+		return mFormSection;
+	}
 
 	class QuestionsAdapter extends FragmentPagerAdapter {
 

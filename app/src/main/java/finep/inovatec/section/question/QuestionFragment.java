@@ -2,7 +2,6 @@ package finep.inovatec.section.question;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,15 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import finep.inovatec.FormFillingManager;
+import finep.inovatec.common.BaseFragment;
+import finep.inovatec.data.FillingFormSection;
+import finep.inovatec.data.FillingQuestion;
 import finep.inovatec.databinding.CellQuestionOptionMultipleBinding;
 import finep.inovatec.databinding.CellQuestionOptionSingleBinding;
 import finep.inovatec.databinding.FragmentQuestionBinding;
 import finep.inovatec.databinding.ItemCheckboxBinding;
 import finep.inovatec.databinding.ItemRadioButtonBinding;
+import finep.inovatec.section.SectionQuestionsActivity;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestionOption;
@@ -22,7 +25,7 @@ import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestionOptio
 /**
  * @author Nivaldo Bondança
  */
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends BaseFragment {
 
 	private static final String ARG_FORM_POSITION     = "arg.FORM_POSITION";
 	private static final String ARG_SECTION_POSITION  = "arg.SECTION_POSITION";
@@ -44,8 +47,9 @@ public class QuestionFragment extends Fragment {
 	private int mSectionPosition;
 	private int mQuestionPosition;
 
-	private FormQuestion mQuestion;
 	private QuestionViewModel mViewModel;
+	private FormQuestion      mQuestion;
+	private FillingQuestion   mQuestionFilling;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class QuestionFragment extends Fragment {
 
 		Form form = FormFillingManager.getInstance().getGroup().getForms().get(mFormPosition);
 		mQuestion = form.getSections().get(mSectionPosition).getQuestions().get(mQuestionPosition);
+
+		mQuestionFilling = getFormSection().getQuestion(mQuestion.getCodeName());
 
 		mViewModel = new QuestionViewModel(mQuestion);
 	}
@@ -112,5 +118,14 @@ public class QuestionFragment extends Fragment {
 		}
 
 		return binding.getRoot();
+	}
+
+	@Override
+	public SectionQuestionsActivity getBaseActivity() {
+		return (SectionQuestionsActivity) super.getBaseActivity();
+	}
+
+	public FillingFormSection getFormSection() {
+		return getBaseActivity().getFormSection();
 	}
 }

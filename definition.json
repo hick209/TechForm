@@ -1,4 +1,6 @@
 {
+  "id": "int",
+  "name": "string",
   "forms": [
     {
       "codeName": "string",
@@ -33,35 +35,33 @@
 //  -> Dados adicionais
 
 {
-  "name": "...",
-  "fill_date": {
-    "start": "yyyy-MM-dd",
-    "end": "yyyy-MM-dd"
-  },
-  "id": "?",
-  "construction_company": "?",
-  "team": "?",
-  "site": {
-    "address": "...",
-    "number": 123,
-    "complement": "",
-    "zipcode": "12345-789",
-    "city": "...",
-    "state": "...",
-    "country": "..."
-  },
-  "forms": [
+  "id": "int",
+  "fillings": [
     {
-      "code": 1,
-      "sections": [
+      "groupId": "int",
+      "code": "string",
+      "address": "string",
+      "deliverTimestamp": "int",
+      "inspectionResponsible": "string",
+      "beginningTimestamp": "int",
+      "endingTimestamp": "int",
+      "forms": [
         {
-          "code": 1,
-          "questions": [
+          "codeName": "string",
+          "sections": [
             {
-              "notes": "...",
-              "images": [
-                "path/to/image1.png",
-                "path/to/image2.jpg"
+              "codeName": "string",
+              "questions": [
+                {
+                  "codeName": "string",
+                  "notes": "string?",
+                  "options": [
+                    {
+                      "items": ["string"]
+                    }
+                  ],
+                  "images": ["string"]
+                }
               ]
             }
           ]

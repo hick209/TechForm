@@ -1,5 +1,12 @@
 package finep.inovatec.data;
 
+import android.support.v4.util.ArrayMap;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Nivaldo Bondança
  */
@@ -12,6 +19,10 @@ public class Filling {
 	private String mInspectionResponsible;
 	private long   mBeginningTimestamp = System.currentTimeMillis();
 	private long   mEndingTimestamp;
+
+	private List<FillingForm> mForms = new ArrayList<>();
+
+	private transient Map<String, FillingForm> mHelper = new ArrayMap<>();
 
 	public long getGroupId() {
 		return mGroupId;
@@ -69,6 +80,35 @@ public class Filling {
 		mEndingTimestamp = endingTimestamp;
 	}
 
+	public List<FillingForm> getForms() {
+		return mForms;
+	}
+
+	public void setForms(List<FillingForm> list) {
+		if (list == null) {
+			list = Collections.emptyList();
+		}
+		mForms = list;
+
+		mHelper.clear();
+		for (FillingForm f : list) {
+			mHelper.put(f.getCodeName(), f);
+		}
+	}
+
+	public FillingForm getForm(String codeName) {
+		FillingForm form = mHelper.get(codeName);
+		if (form == null) {
+			form = new FillingForm();
+			mForms.add(form);
+		}
+		return form;
+	}
+
+	public FillingForm putForm(FillingForm item) {
+		return mHelper.put(item.getCodeName(), item);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -78,7 +118,6 @@ public class Filling {
 
 		if (mBeginningTimestamp != filling.mBeginningTimestamp) return false;
 		return !(mCode != null ? !mCode.equals(filling.mCode) : filling.mCode != null);
-
 	}
 
 	@Override

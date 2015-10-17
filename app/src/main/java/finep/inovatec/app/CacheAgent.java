@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.File;
 import java.io.FileReader;
@@ -14,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import finep.inovatec.data.Filling;
+import finep.inovatec.data.FillingWrapper;
 
 /**
  * @author Nivaldo Bondança
@@ -26,6 +26,7 @@ public class CacheAgent {
 	public CacheAgent(Context context) {
 		mGson = new Gson();
 		mFillingsDir = new File(context.getFilesDir(), "fillings");
+		//noinspection ResultOfMethodCallIgnored
 		mFillingsDir.mkdirs();
 	}
 
@@ -36,12 +37,12 @@ public class CacheAgent {
 
 		FillingWrapper fillingWrapper = mGson.fromJson(reader, FillingWrapper.class);
 		Set<Filling> fillings = fillingWrapper.getFillings();
+
 		if (fillings == null) {
-			return new HashSet<>();
+			fillings = new HashSet<>();
 		}
-		else {
-			return fillings;
-		}
+
+		return fillings;
 	}
 
 	public void saveFillings(long groupId, Set<Filling> fillings) throws IOException {
@@ -57,29 +58,5 @@ public class CacheAgent {
 
 	private File getFillingFile(long groupId) {
 		return new File(mFillingsDir, String.format("group-%d.json", groupId));
-	}
-
-
-	private class FillingWrapper {
-		@SerializedName("id")
-		private long         mGroupId;
-		@SerializedName("fillings")
-		private Set<Filling> mFillings;
-
-		public long getGroupId() {
-			return mGroupId;
-		}
-
-		public void setGroupId(long groupId) {
-			this.mGroupId = groupId;
-		}
-
-		public Set<Filling> getFillings() {
-			return mFillings;
-		}
-
-		public void setFillings(Set<Filling> fillings) {
-			mFillings = fillings;
-		}
 	}
 }
