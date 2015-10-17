@@ -12,6 +12,7 @@ import finep.inovatec.FormFillingManager;
 import finep.inovatec.common.BaseFragment;
 import finep.inovatec.data.FillingFormSection;
 import finep.inovatec.data.FillingQuestion;
+import finep.inovatec.data.FillingQuestionOption;
 import finep.inovatec.databinding.CellQuestionOptionMultipleBinding;
 import finep.inovatec.databinding.CellQuestionOptionSingleBinding;
 import finep.inovatec.databinding.FragmentQuestionBinding;
@@ -64,7 +65,7 @@ public class QuestionFragment extends BaseFragment {
 
 		mQuestionFilling = getFormSection().getQuestion(mQuestion.getCodeName());
 
-		mViewModel = new QuestionViewModel(mQuestion);
+		mViewModel = new QuestionViewModel(mQuestion, mQuestionFilling);
 	}
 
 	@Nullable
@@ -76,15 +77,34 @@ public class QuestionFragment extends BaseFragment {
 		View view = binding.getRoot();
 		ViewGroup content = binding.questionContent;
 
+		List<FillingQuestionOption> optionFillings = mQuestionFilling.getOptions();
+
 		List<FormQuestionOption> options = mQuestion.getOptions();
-		for (FormQuestionOption option : options) {
+		boolean refreshFilling = options.size() != optionFillings.size();
+		if (refreshFilling) {
+			optionFillings.clear();
+		}
+
+		for (int i = 0; i < options.size(); i++) {
+			FormQuestionOption option = options.get(i);
+			FillingQuestionOption optionFilling;
+
+			if (refreshFilling) {
+				optionFilling = new FillingQuestionOption();
+				optionFillings.add(optionFilling);
+				optionFilling.setItems(new String[option.getItems().size()]);
+			}
+			else {
+				optionFilling = optionFillings.get(i);
+			}
+
 			switch (option.getSelection().toLowerCase()) {
 				case "single":
-					content.addView(inflateSingleSelection(inflater, content, option));
+					content.addView(inflateSingleSelection(inflater, content, option, optionFilling));
 					break;
 
 				case "multiple":
-					content.addView(inflateMultipleSelection(inflater, content, option));
+					content.addView(inflateMultipleSelection(inflater, content, option, optionFilling));
 					break;
 			}
 		}
@@ -92,32 +112,51 @@ public class QuestionFragment extends BaseFragment {
 		return view;
 	}
 
-	private View inflateSingleSelection(LayoutInflater inflater, ViewGroup parent, FormQuestionOption option) {
+	private View inflateSingleSelection(LayoutInflater inflater, ViewGroup parent,
+			FormQuestionOption option, FillingQuestionOption optionFilling) {
 		CellQuestionOptionSingleBinding binding = CellQuestionOptionSingleBinding.inflate(inflater, parent, false);
+		binding.setViewModel(optionFilling);
 		binding.setTitle(option.getTitle());
 
 		List<String> items = option.getItems();
-		for (int i = 0; i < items.size(); i++) {
+		String[] itemFillings = optionFilling.getItems();
+		for (String item : items) {
 			ItemRadioButtonBinding itemBinding = ItemRadioButtonBinding.inflate(inflater, binding.container, true);
-			itemBinding.setId(i);
-			itemBinding.setText(items.get(i));
+			itemBinding.setText(item);
+			itemBinding.setChecked(isChecked(itemFillings, item));
 		}
 
 		return binding.getRoot();
 	}
 
-	private View inflateMultipleSelection(LayoutInflater inflater, ViewGroup parent, FormQuestionOption option) {
+	private View inflateMultipleSelection(LayoutInflater inflater, ViewGroup parent,
+			FormQuestionOption option, FillingQuestionOption optionFilling) {
 		CellQuestionOptionMultipleBinding binding = CellQuestionOptionMultipleBinding.inflate(inflater, parent, false);
 		binding.setTitle(option.getTitle());
 
 		List<String> items = option.getItems();
+		String[] itemFillings = optionFilling.getItems();
 		for (int i = 0; i < items.size(); i++) {
+			String item = items.get(i);
+
 			ItemCheckboxBinding itemBinding = ItemCheckboxBinding.inflate(inflater, binding.container, true);
 			itemBinding.setId(i);
-			itemBinding.setText(items.get(i));
+			itemBinding.setText(item);
+			itemBinding.setChecked(isChecked(itemFillings, item));
 		}
 
 		return binding.getRoot();
+	}
+
+	private boolean isChecked(String[] itemFillings, String item) {
+		boolean checked = false;
+		for (String filling : itemFillings) {
+			if (item.equals(filling)) {
+				checked = true;
+				break;
+			}
+		}
+		return checked;
 	}
 
 	@Override
@@ -128,4 +167,5 @@ public class QuestionFragment extends BaseFragment {
 	public FillingFormSection getFormSection() {
 		return getBaseActivity().getFormSection();
 	}
+
 }

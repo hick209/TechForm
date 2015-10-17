@@ -6,11 +6,13 @@
 	<data>
 		<variable name="id" type="int"/>
 		<variable name="text" type="String"/>
+		<variable name="checked" type="boolean"/>
 	</data>
 
 	<CheckBox
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@{text}"
+		android:checked="@{true}"
 		tools:text="Atende"/>
 </layout>

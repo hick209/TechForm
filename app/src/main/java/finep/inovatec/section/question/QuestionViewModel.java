@@ -1,5 +1,6 @@
 package finep.inovatec.section.question;
 
+import finep.inovatec.data.FillingQuestion;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestion;
 
 /**
@@ -9,7 +10,7 @@ public class QuestionViewModel {
 
 	private FormQuestion mQuestion;
 
-	public QuestionViewModel(FormQuestion question) {
+	public QuestionViewModel(FormQuestion question, FillingQuestion questionFilling) {
 		mQuestion = question;
 	}
 

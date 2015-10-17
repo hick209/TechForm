@@ -6,8 +6,10 @@
 	<data>
 		<import type="android.text.TextUtils"/>
 		<import type="android.view.View"/>
+		<import type="finep.inovatec.data.FillingQuestionOption"/>
 
 		<variable name="title" type="String"/>
+		<variable name="viewModel" type="FillingQuestionOption"/>
 	</data>
 
 	<LinearLayout

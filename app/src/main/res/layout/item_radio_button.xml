@@ -4,13 +4,14 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-		<variable name="id" type="int"/>
 		<variable name="text" type="String"/>
+		<variable name="checked" type="boolean"/>
 	</data>
 
 	<RadioButton
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@{text}"
+		android:checked="@{checked}"
 		tools:text="Atende"/>
 </layout>
