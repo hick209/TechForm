@@ -1,6 +1,7 @@
 package finep.inovatec.util;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,7 +10,10 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.ViewAnimator;
+
+import finep.inovatec.R;
 
 /**
  * @author Nivaldo Bondança
@@ -57,5 +61,10 @@ public class BindingUtils {
 	public static void addTextChangedListener(EditText view, TextWatcher textWatcher) {
 		view.addTextChangedListener(textWatcher);
 		view.setText(view.getText()); // Call the watcher
+	}
+
+	@BindingAdapter("iconEnd")
+	public static void setCompoundDrawable(TextView view, Drawable drawable) {
+		view.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null);
 	}
 }

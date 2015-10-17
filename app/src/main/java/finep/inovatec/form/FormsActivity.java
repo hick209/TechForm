@@ -15,6 +15,8 @@ import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
 import finep.inovatec.data.Filling;
+import finep.inovatec.data.FillingForm;
+import finep.inovatec.util.Utils;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
 
@@ -39,6 +41,27 @@ public class FormsActivity extends BaseActivity {
 
 		setupToolbar();
 		setupViewPager();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		List<Form> forms = mFillingManager.getGroup().getForms();
+		List<FillingForm> fillingForms = mFillingManager.getFilling().getForms();
+
+		boolean complete = true;
+		for (int i = 0; i < forms.size(); i++) {
+			if (!Utils.isFormComplete(forms.get(i), fillingForms.get(i))) {
+				complete = false;
+				break;
+			}
+		}
+		if (complete) {
+			// Mark as complete
+			mFillingManager.getFilling().setEndingTimestamp(System.currentTimeMillis());
+			// And save!
+			mFillingManager.save();
+		}
 	}
 
 	private void setupViewPager() {

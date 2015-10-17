@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools">
+	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<data>
 		<import type="finep.inovatec.form.SectionItemViewModel"/>
@@ -18,8 +19,9 @@
 		android:gravity="center_vertical"
 		android:text="@{viewModel.text}"
 		android:textAppearance="?android:textAppearanceLarge"
-		android:drawableEnd="@{viewModel.complete ? @drawable/ic_navigation_check_colored : null}"
+		app:iconEnd="@{viewModel.complete ? @drawable/ic_navigation_check_colored : null}"
 		tools:text="1 - Section"
+		tools:enabled="false"
 		tools:drawableEnd="@drawable/ic_navigation_check_colored"/>
 
 </layout>
