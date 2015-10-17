@@ -6,7 +6,10 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.util.List;
 
@@ -104,7 +107,6 @@ public class QuestionFragment extends BaseFragment {
 			if (refreshFilling) {
 				optionFilling = new FillingQuestionOption();
 				optionFillings.add(optionFilling);
-				optionFilling.setItems(new String[option.getItems().size()]);
 			}
 			else {
 				optionFilling = optionFillings.get(i);
@@ -131,12 +133,23 @@ public class QuestionFragment extends BaseFragment {
 		binding.setTitle(option.getTitle());
 
 		List<String> items = option.getItems();
-		String[] itemFillings = optionFilling.getItems();
+		final List<String> itemFillings = optionFilling.getItems();
 		for (String item : items) {
 			ItemRadioButtonBinding itemBinding = ItemRadioButtonBinding.inflate(inflater, binding.container, true);
 			itemBinding.setText(item);
 			itemBinding.setChecked(isChecked(itemFillings, item));
 		}
+
+		binding.container.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				// Clear the list because it's a single selection
+				itemFillings.clear();
+
+				RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
+				itemFillings.add(radioButton.getText().toString());
+			}
+		});
 
 		return binding.getRoot();
 	}
@@ -147,7 +160,7 @@ public class QuestionFragment extends BaseFragment {
 		binding.setTitle(option.getTitle());
 
 		List<String> items = option.getItems();
-		String[] itemFillings = optionFilling.getItems();
+		final List<String> itemFillings = optionFilling.getItems();
 		for (int i = 0; i < items.size(); i++) {
 			String item = items.get(i);
 
@@ -155,12 +168,25 @@ public class QuestionFragment extends BaseFragment {
 			itemBinding.setId(i);
 			itemBinding.setText(item);
 			itemBinding.setChecked(isChecked(itemFillings, item));
+
+			itemBinding.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					String item = buttonView.getText().toString();
+					if (isChecked) {
+						itemFillings.add(item);
+					}
+					else {
+						itemFillings.remove(item);
+					}
+				}
+			});
 		}
 
 		return binding.getRoot();
 	}
 
-	private boolean isChecked(String[] itemFillings, String item) {
+	private boolean isChecked(List<String> itemFillings, String item) {
 		boolean checked = false;
 		for (String filling : itemFillings) {
 			if (item.equals(filling)) {

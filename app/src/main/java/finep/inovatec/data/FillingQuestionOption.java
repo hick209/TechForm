@@ -1,17 +1,20 @@
 package finep.inovatec.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Nivaldo Bondança
  */
 public class FillingQuestionOption {
 
-	private String[] mItems;
+	private List<String> mItems = new ArrayList<>();
 
-	public String[] getItems() {
+	public List<String> getItems() {
 		return mItems;
 	}
 
-	public void setItems(String[] items) {
+	public void setItems(List<String> items) {
 		mItems = items;
 	}
 }
