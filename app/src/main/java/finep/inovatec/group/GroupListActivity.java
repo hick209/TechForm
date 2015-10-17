@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import finep.inovatec.BuildConfig;
 import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
@@ -243,8 +244,23 @@ public class GroupListActivity extends BaseActivity
 		@Override
 		public void onLoadFinished(Loader<List<Group>> loader, List<Group> data) {
 			super.onLoadFinished(loader, data);
-			mAdapter.changeData(data);
-			mViewModel.setLoading(false);
+			if (BuildConfig.DEBUG) {
+				mAdapter.changeData(data);
+				mViewModel.setLoading(false);
+			}
+			else {
+				int position = 0;
+				for (int i = 0; i < data.size(); i++) {
+					Group group = data.get(i);
+					if (group.getId() == 1) {
+						onItemClick(null, null, position, position);
+						return;
+					}
+				}
+
+				mAdapter.changeData(null);
+				mViewModel.setLoading(false);
+			}
 		}
 
 		@Override
