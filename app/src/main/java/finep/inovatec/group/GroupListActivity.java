@@ -86,6 +86,7 @@ public class GroupListActivity extends BaseActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_group_list, menu);
+		menu.findItem(R.id.action_uploadData).setVisible(BuildConfig.DEBUG);
 		return true;
 	}
 
@@ -244,22 +245,12 @@ public class GroupListActivity extends BaseActivity
 		@Override
 		public void onLoadFinished(Loader<List<Group>> loader, List<Group> data) {
 			super.onLoadFinished(loader, data);
-			if (BuildConfig.DEBUG) {
-				mAdapter.changeData(data);
+			mAdapter.changeData(data);
+			if (BuildConfig.DEBUG || data.isEmpty()) {
 				mViewModel.setLoading(false);
 			}
 			else {
-				int position = 0;
-				for (int i = 0; i < data.size(); i++) {
-					Group group = data.get(i);
-					if (group.getId() == 1) {
-						onItemClick(null, null, position, position);
-						return;
-					}
-				}
-
-				mAdapter.changeData(null);
-				mViewModel.setLoading(false);
+				onItemClick(null, null, 0, 0);
 			}
 		}
 

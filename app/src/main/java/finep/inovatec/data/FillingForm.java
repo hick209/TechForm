@@ -1,22 +1,21 @@
 package finep.inovatec.data;
 
-import android.support.v4.util.ArrayMap;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Nivaldo Bondança
  */
 public class FillingForm {
 
+	@SerializedName("codeName")
 	private String mCodeName;
 
+	@SerializedName("sections")
 	private List<FillingFormSection> mSections = new ArrayList<>();
-
-	private transient Map<String, FillingFormSection> mHelper = new ArrayMap<>();
 
 	public String getCodeName() {
 		return mCodeName;
@@ -35,24 +34,30 @@ public class FillingForm {
 			list = Collections.emptyList();
 		}
 		mSections = list;
-
-		mHelper.clear();
-		for (FillingFormSection f : list) {
-			mHelper.put(f.getCodeName(), f);
-		}
 	}
 
 	public FillingFormSection getSection(String codeName) {
-		FillingFormSection section = mHelper.get(codeName);
-		if (section == null) {
-			section = new FillingFormSection();
-			mSections.add(section);
+		for (FillingFormSection item : mSections) {
+			if (item.getCodeName().equals(codeName)) {
+				return item;
+			}
 		}
+
+		FillingFormSection section = new FillingFormSection();
+		section.setCodeName(codeName);
+
+		putSection(section);
 
 		return section;
 	}
 
 	public void putSection(FillingFormSection item) {
-		mHelper.put(item.getCodeName(), item);
+		for (FillingFormSection section : mSections) {
+			if (section.getCodeName().equals(item.getCodeName())) {
+				mSections.remove(section);
+				break;
+			}
+		}
+		mSections.add(item);
 	}
 }

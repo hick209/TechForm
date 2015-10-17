@@ -42,6 +42,7 @@ public class SectionQuestionsActivity extends BaseActivity {
 
 	private int mFormPosition;
 	private int mSectionPosition;
+
 	private FillingFormSection mFormSection;
 
 	@Override
@@ -109,7 +110,11 @@ public class SectionQuestionsActivity extends BaseActivity {
 
 	private void setupFilling(FormFillingManager manager, Form form, FormSection section) {
 		FillingForm fillingForm = manager.getFilling().getForm(form.getCodeName());
-		mFormSection = fillingForm.getSection(section.getCodeName());
+		mFormSection = fillingForm.getSection(section.getCodeName()).createCopy();
+	}
+
+	private FillingFormSection cloneSections(FillingFormSection section) {
+		return null;
 	}
 
 	private String getSectionCode(Form form, int section) {

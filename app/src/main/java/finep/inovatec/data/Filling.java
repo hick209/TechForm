@@ -1,28 +1,33 @@
 package finep.inovatec.data;
 
-import android.support.v4.util.ArrayMap;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Nivaldo Bondança
  */
 public class Filling {
 
+	@SerializedName("groupId")
 	private long   mGroupId;
+	@SerializedName("code")
 	private String mCode;
+	@SerializedName("address")
 	private String mAddress;
+	@SerializedName("deliverTimestamp")
 	private long   mDeliverTimestamp = System.currentTimeMillis();
+	@SerializedName("inspectionResponsible")
 	private String mInspectionResponsible;
+	@SerializedName("beginningTimestamp")
 	private long   mBeginningTimestamp = System.currentTimeMillis();
+	@SerializedName("endingTimestamp")
 	private long   mEndingTimestamp;
 
+	@SerializedName("forms")
 	private List<FillingForm> mForms = new ArrayList<>();
-
-	private transient Map<String, FillingForm> mHelper = new ArrayMap<>();
 
 	public long getGroupId() {
 		return mGroupId;
@@ -89,24 +94,31 @@ public class Filling {
 			list = Collections.emptyList();
 		}
 		mForms = list;
-
-		mHelper.clear();
-		for (FillingForm f : list) {
-			mHelper.put(f.getCodeName(), f);
-		}
 	}
 
 	public FillingForm getForm(String codeName) {
-		FillingForm form = mHelper.get(codeName);
-		if (form == null) {
-			form = new FillingForm();
-			mForms.add(form);
+		for (FillingForm item : mForms) {
+			if (item.getCodeName().equals(codeName)) {
+				return item;
+			}
 		}
+
+		FillingForm form = new FillingForm();
+		form.setCodeName(codeName);
+
+		putForm(form);
+
 		return form;
 	}
 
-	public FillingForm putForm(FillingForm item) {
-		return mHelper.put(item.getCodeName(), item);
+	public void putForm(FillingForm item) {
+		for (FillingForm form : mForms) {
+			if (form.getCodeName().equals(item.getCodeName())) {
+				mForms.remove(form);
+				break;
+			}
+		}
+		mForms.add(item);
 	}
 
 	@Override

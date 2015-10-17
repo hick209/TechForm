@@ -65,7 +65,7 @@ public class FormFillingManager {
 		try {
 			// Save
 			mCacheAgent.saveFillings(groupId, fillings);
-
+			return true;
 		}
 		catch (IOException ignored) {
 		}

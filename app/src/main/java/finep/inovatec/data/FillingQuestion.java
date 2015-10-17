@@ -1,5 +1,7 @@
 package finep.inovatec.data;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +10,14 @@ import java.util.List;
  */
 public class FillingQuestion {
 
+	@SerializedName("codeName")
 	private String mCodeName;
+	@SerializedName("notes")
 	private String mNotes;
 
+	@SerializedName("options")
 	private List<FillingQuestionOption> mOptions = new ArrayList<>();
-
+	@SerializedName("images")
 	private List<String> mImages = new ArrayList<>();
 
 	public String getCodeName() {
@@ -45,5 +50,24 @@ public class FillingQuestion {
 
 	public void setImages(List<String> images) {
 		mImages = images;
+	}
+
+
+	public FillingQuestion createCopy() {
+		FillingQuestion clone = new FillingQuestion();
+		clone.setCodeName(getCodeName());
+		clone.setNotes(getNotes());
+
+		clone.setImages(new ArrayList<>(getImages()));
+
+		List<FillingQuestionOption> options = getOptions();
+		List<FillingQuestionOption> optionFillings = new ArrayList<>(options.size());
+		for (FillingQuestionOption o : options) {
+			optionFillings.add(o.createCopy());
+		}
+
+		clone.setOptions(optionFillings);
+
+		return clone;
 	}
 }
