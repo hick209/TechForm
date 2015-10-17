@@ -2,14 +2,17 @@ package finep.inovatec.section.question;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.util.List;
 
 import finep.inovatec.FormFillingManager;
 import finep.inovatec.common.BaseFragment;
+import finep.inovatec.components.SimpleTextWatcher;
 import finep.inovatec.data.FillingFormSection;
 import finep.inovatec.data.FillingQuestion;
 import finep.inovatec.data.FillingQuestionOption;
@@ -65,7 +68,7 @@ public class QuestionFragment extends BaseFragment {
 
 		mQuestionFilling = getFormSection().getQuestion(mQuestion.getCodeName());
 
-		mViewModel = new QuestionViewModel(mQuestion, mQuestionFilling);
+		mViewModel = new QuestionViewModel(mQuestion);
 	}
 
 	@Nullable
@@ -73,6 +76,15 @@ public class QuestionFragment extends BaseFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		FragmentQuestionBinding binding = FragmentQuestionBinding.inflate(inflater, container, false);
 		binding.setViewModel(mViewModel);
+
+		EditText notes = binding.notes;
+		notes.setText(mQuestionFilling.getNotes());
+		notes.addTextChangedListener(new SimpleTextWatcher() {
+			@Override
+			public void afterTextChanged(Editable s) {
+				mQuestionFilling.setNotes(s.toString());
+			}
+		});
 
 		View view = binding.getRoot();
 		ViewGroup content = binding.questionContent;
