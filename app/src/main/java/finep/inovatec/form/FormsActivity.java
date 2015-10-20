@@ -15,7 +15,6 @@ import finep.inovatec.FormFillingManager;
 import finep.inovatec.R;
 import finep.inovatec.app.BaseActivity;
 import finep.inovatec.data.Filling;
-import finep.inovatec.data.FillingForm;
 import finep.inovatec.util.Utils;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Form;
 import info.nivaldobondanca.backend.techform.techFormAPI.model.Group;
@@ -47,11 +46,11 @@ public class FormsActivity extends BaseActivity {
 	protected void onResume() {
 		super.onResume();
 		List<Form> forms = mFillingManager.getGroup().getForms();
-		List<FillingForm> fillingForms = mFillingManager.getFilling().getForms();
+		Filling filling = mFillingManager.getFilling();
 
 		boolean complete = true;
-		for (int i = 0; i < forms.size(); i++) {
-			if (!Utils.isFormComplete(forms.get(i), fillingForms.get(i))) {
+		for (Form form : forms) {
+			if (!Utils.isFormComplete(form, filling.getForm(form.getCodeName()))) {
 				complete = false;
 				break;
 			}

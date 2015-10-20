@@ -251,6 +251,7 @@ public class GroupListActivity extends BaseActivity
 			}
 			else {
 				onItemClick(null, null, 0, 0);
+				finish();
 			}
 		}
 
