@@ -8,6 +8,7 @@
 
 	<!-- Action Bar -->
 	<string name="action_done">Pronto</string>
+	<string name="action_sendResults">Enviar resultados</string>
 	<string name="action_update">Atualizar</string>
 	<string name="action_uploadData">Enviar formulário</string>
 

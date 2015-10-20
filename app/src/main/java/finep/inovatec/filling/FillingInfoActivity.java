@@ -1,11 +1,16 @@
 package finep.inovatec.filling;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -64,6 +69,33 @@ public class FillingInfoActivity extends BaseActivity implements DatePickerDialo
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(fillingManager.getGroup().getName());
 		getSupportActionBar().setSubtitle(subtitle);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_filling_info, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_sendResults:
+				// Send the request
+				// TODO this is a fake-one
+				final ProgressDialog progressDialog = ProgressDialog.show(this, null, "Enviando...");
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						if (progressDialog.isShowing()) {
+							progressDialog.dismiss();
+							Toast.makeText(FillingInfoActivity.this, "Formulário enviado!", Toast.LENGTH_SHORT).show();
+						}
+					}
+				}, 3000);
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

@@ -61,7 +61,9 @@ public class Utils {
 	public static boolean isFormComplete(Form form, FillingForm fillingForm) {
 		List<FormSection> sections = form.getSections();
 		for (FormSection section : sections) {
-			isSectionComplete(section, fillingForm.getSection(section.getCodeName()));
+			if (!isSectionComplete(section, fillingForm.getSection(section.getCodeName()))) {
+				return false;
+			}
 		}
 
 		return true;
