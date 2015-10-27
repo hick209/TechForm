@@ -46,6 +46,7 @@
 					app:onRefresh="@{viewModel.refreshListener}">
 
 					<ListView
+						android:id="@android:id/list"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:paddingBottom="88dp"

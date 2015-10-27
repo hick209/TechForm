@@ -128,6 +128,7 @@ public class GroupListActivity extends BaseActivity
 					public Boolean call(TechFormAPI api) {
 						try {
 							api.group().save(group.getId(), group).execute();
+							Log.i(LOG_TAG, "Uploaded data successfully");
 							return true;
 						}
 						catch (IOException e) {

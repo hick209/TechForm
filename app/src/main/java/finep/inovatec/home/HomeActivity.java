@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +40,8 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 	private Group         mGroup;
 	private HomeViewModel mViewModel;
 
+	private View mListView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,10 +60,13 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 
 		ActivityHomeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 		binding.setViewModel(mViewModel);
+		mListView = binding.list;
 
 		setupToolbar();
 		//noinspection ConstantConditions
 		getSupportActionBar().setTitle(mGroup.getName());
+
+		registerForContextMenu(mListView);
 	}
 
 	@Override
@@ -64,12 +74,42 @@ public class HomeActivity extends BaseActivity implements HomeViewModel.HomeCall
 		super.onDestroy();
 		// Remove the callbacks
 		mViewModel.setCallbacks(null);
+
+		unregisterForContextMenu(mListView);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		loadData();
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if (v.getId() == android.R.id.list) {
+			getMenuInflater().inflate(R.menu.item_filling, menu);
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+		if (menuInfo instanceof AdapterView.AdapterContextMenuInfo) {
+			int position = ((AdapterView.AdapterContextMenuInfo) menuInfo).position;
+			switch (item.getItemId()) {
+				case R.id.action_delete:
+					CacheAgent cacheAgent = getTechFormApplication().getCacheAgent();
+					try {
+						cacheAgent.deleteFilling(mGroup.getId(), mViewModel.getAdapter().getItem(position));
+						loadData();
+					} catch (IOException e) {
+						Toast.makeText(this, R.string.message_errorDeletingFilling, Toast.LENGTH_SHORT).show();
+					}
+					return true;
+			}
+		}
+		return super.onContextItemSelected(item);
 	}
 
 	@Override

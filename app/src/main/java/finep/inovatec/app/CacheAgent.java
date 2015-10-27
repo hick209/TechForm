@@ -56,6 +56,12 @@ public class CacheAgent {
 		Files.write(json.getBytes(), getFillingFile(groupId));
 	}
 
+	public void deleteFilling(long groupId, Filling filling) throws IOException {
+		Set<Filling> fillings = loadFillings(groupId);
+		fillings.remove(filling);
+		saveFillings(groupId, fillings);
+	}
+
 	private File getFillingFile(long groupId) {
 		return new File(mFillingsDir, String.format("group-%d.json", groupId));
 	}

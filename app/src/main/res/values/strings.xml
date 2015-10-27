@@ -7,6 +7,7 @@
 	<string name="title_toolbar_newFilling">Novo preenchimento</string>
 
 	<!-- Action Bar -->
+	<string name="action_delete">Apagar</string>
 	<string name="action_done">Pronto</string>
 	<string name="action_sendResults">Enviar resultados</string>
 	<string name="action_update">Atualizar</string>
@@ -38,6 +39,7 @@
 	<string name="message_badFileFormat">JSON não corresponde ao esperado.</string>
 	<string name="message_fileUploaded">Arquivo enviado com sucesso!</string>
 	<string name="message_errorOnFileUploaded">Erro no envio do arquivo.</string>
+	<string name="message_errorDeletingFilling">Não foi possível apagar o item selecionado.</string>
 
 	<!-- Error -->
 	<string name="error_requiredField">Campo obrigatório</string>
