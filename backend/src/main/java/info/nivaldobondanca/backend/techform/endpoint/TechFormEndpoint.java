@@ -100,10 +100,10 @@ public class TechFormEndpoint {
 		return forms;
 	}
 
-	@ApiMethod(name = "group.save")
+	@ApiMethod(name = "group.save", httpMethod = ApiMethod.HttpMethod.POST)
 	public void setSaveGroup(
 			@Named("groupId") Long groupId,
-			@Named("data") String data)
+			Group data)
 			throws IOException {
 
 		// Get the key
@@ -126,7 +126,7 @@ public class TechFormEndpoint {
 		}
 
 		// Saves the new data
-		JsonNode json = NewData.mapper().readTree(data);
+		JsonNode json = NewData.mapper().convertValue(data, JsonNode.class);
 		NewData newData = new NewData(dataStore, json);
 		newData.run(true);
 	}

@@ -115,7 +115,7 @@ public class GroupListActivity extends BaseActivity
 				JSONObject json = new JSONObject(fileContent);
 
 				Log.i(LOG_TAG, "Checking JSON validity.");
-				Log.v(LOG_TAG, json.toString(2));
+				Log.v(LOG_TAG, json.toString());
 
 				final String jsonData = json.toString();
 				final Group g = ParseUtils.parseGroupJSON(jsonData);
