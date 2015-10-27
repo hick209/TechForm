@@ -117,8 +117,8 @@ public class GroupListActivity extends BaseActivity
 				Log.i(LOG_TAG, "Checking JSON validity.");
 				Log.v(LOG_TAG, json.toString());
 
-				final String jsonData = json.toString();
-				final Group g = ParseUtils.parseGroupJSON(jsonData);
+				String jsonData = json.toString();
+				final Group group = ParseUtils.parseGroupJSON(jsonData);
 
 				// JSON is valid!
 				// Send it!
@@ -127,7 +127,7 @@ public class GroupListActivity extends BaseActivity
 					@Override
 					public Boolean call(TechFormAPI api) {
 						try {
-							api.group().save(g.getId(), jsonData).execute();
+							api.group().save(group.getId(), group).execute();
 							return true;
 						}
 						catch (IOException e) {

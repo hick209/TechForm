@@ -177,7 +177,7 @@ public class NewData {
 		entity.setProperty("selection", text);
 
 		// This will throw an error in case the value is not correct
-		FormQuestionOption.Selection.valueOf(text.toUpperCase());
+		FormQuestionOption.Selection.valueOf(text.toLowerCase());
 
 		Key key = mDataStore.put(entity);
 

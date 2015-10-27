@@ -18,9 +18,9 @@ import static com.google.api.client.repackaged.com.google.common.base.Objects.fi
 public class FormQuestionOption {
 	public enum Selection {
 		@SerializedName("single")
-		SINGLE,
+		single,
 		@SerializedName("multiple")
-		MULTIPLE,
+		multiple,
 	}
 
 	private long         mId;
@@ -70,7 +70,7 @@ public class FormQuestionOption {
 		option.setTitle(title);
 
 		String selection = (String) entity.getProperty("selection");
-		option.setSelection(Selection.valueOf(selection.toUpperCase()));
+		option.setSelection(Selection.valueOf(selection.toLowerCase()));
 
 		//noinspection unchecked
 		List<Key> keys = (List<Key>) entity.getProperty("options");

@@ -26,10 +26,12 @@ public class ParseUtils {
 		data.setName(json.getString("name"));
 
 		JSONArray forms = json.getJSONArray("forms");
+		List<Form> formList = new ArrayList<>();
 		for (int i = 0; i < forms.length(); i++) {
 			// Just check the forms validity
-			parseFormJSON(forms.getJSONObject(i).toString());
+			formList.add(parseFormJSON(forms.getJSONObject(i).toString()));
 		}
+		data.setForms(formList);
 
 		return data;
 	}
