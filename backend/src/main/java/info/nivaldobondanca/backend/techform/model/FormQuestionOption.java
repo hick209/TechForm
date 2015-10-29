@@ -73,7 +73,7 @@ public class FormQuestionOption {
 		option.setSelection(Selection.valueOf(selection.toLowerCase()));
 
 		//noinspection unchecked
-		List<Key> keys = (List<Key>) entity.getProperty("options");
+		List<Key> keys = (List<Key>) entity.getProperty("items");
 		keys = firstNonNull(keys, Collections.<Key>emptyList());
 
 		List<String> items = new ArrayList<>();

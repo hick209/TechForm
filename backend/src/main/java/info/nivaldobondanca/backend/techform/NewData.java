@@ -2,20 +2,28 @@ package info.nivaldobondanca.backend.techform;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.repackaged.org.codehaus.jackson.JsonNode;
 import com.google.appengine.repackaged.org.codehaus.jackson.map.ObjectMapper;
 import com.google.appengine.repackaged.org.codehaus.jackson.node.ArrayNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import info.nivaldobondanca.backend.techform.model.FormQuestionOption;
+
+import static com.google.api.client.repackaged.com.google.common.base.Objects.firstNonNull;
 
 /**
  * @author Nivaldo Bondança
  */
 public class NewData {
+
+	private static final Logger logger = Logger.getLogger(NewData.class.getName());
 
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -28,7 +36,13 @@ public class NewData {
 	}
 
 	public Entity run(boolean singleGroup) {
-		Entity root = new Entity("Root", 1);
+		Entity root;
+		try {
+			root = mDataStore.get(KeyFactory.createKey("Root", 1));
+		} catch (EntityNotFoundException ignored) {
+			logger.info("Creating Root...");
+			root = new Entity("Root", 1);
+		}
 
 		List<Key> keys;
 		if (singleGroup) {
@@ -55,6 +69,17 @@ public class NewData {
 
 	protected Key processGroup(Key parent, JsonNode json) {
 		long id = json.get("id").asLong();
+
+		try {
+			logger.info("Deleting old content...");
+
+			// Remove old data (if necessary)
+			Key groupKey = KeyFactory.createKey(parent, "Group", id);
+			deleteGroup(groupKey);
+		} catch (EntityNotFoundException e) {
+			logger.warning("Failed finding Group! " + e.getLocalizedMessage());
+		}
+
 		Entity entity = new Entity("Group", id, parent);
 
 		String name = json.get("name").asText();
@@ -189,7 +214,7 @@ public class NewData {
 			keys.add(k);
 		}
 
-		entity.setProperty("options", keys);
+		entity.setProperty("items", keys);
 
 		mDataStore.put(entity);
 
@@ -205,5 +230,79 @@ public class NewData {
 
 	public static ObjectMapper mapper() {
 		return MAPPER;
+	}
+
+	private void deleteGroup(Key group) throws EntityNotFoundException {
+		List<Key> keys = new ArrayList<>();
+
+		Entity entity = mDataStore.get(group);
+		//noinspection unchecked
+		List<Key> forms = (List<Key>) entity.getProperty("forms");
+		forms = firstNonNull(forms, Collections.<Key>emptyList());
+
+		for (Key form : forms) try {
+			deleteForm(keys, form);
+		} catch (EntityNotFoundException e) {
+			logger.warning("Failed finding Form! " + e.getLocalizedMessage());
+		}
+
+		mDataStore.delete(keys);
+
+		logger.info("Deleted " + keys.size() + " entries");
+	}
+
+	private void deleteForm(List<Key> keys, Key form) throws EntityNotFoundException {
+		Entity entity = mDataStore.get(form);
+		//noinspection unchecked
+		List<Key> sections = (List<Key>) entity.getProperty("sections");
+		sections = firstNonNull(sections, Collections.<Key>emptyList());
+
+		for (Key section : sections) try {
+			deleteSection(keys, section);
+		} catch (EntityNotFoundException e) {
+			logger.warning("Failed finding Section! " + e.getLocalizedMessage());
+		}
+
+		keys.add(form);
+	}
+
+	private void deleteSection(List<Key> keys, Key section) throws EntityNotFoundException {
+		Entity entity = mDataStore.get(section);
+		//noinspection unchecked
+		List<Key> questions = (List<Key>) entity.getProperty("questions");
+		questions = firstNonNull(questions, Collections.<Key>emptyList());
+
+		for (Key question : questions) try {
+			deleteQuestion(keys, question);
+		} catch (EntityNotFoundException e) {
+			logger.warning("Failed finding Question! " + e.getLocalizedMessage());
+		}
+
+		keys.add(section);
+	}
+
+	private void deleteQuestion(List<Key> keys, Key question) throws EntityNotFoundException {
+		Entity entity = mDataStore.get(question);
+		//noinspection unchecked
+		List<Key> options = (List<Key>) entity.getProperty("options");
+		options = firstNonNull(options, Collections.<Key>emptyList());
+
+		for (Key option : options) try {
+			deleteQuestionOption(keys, option);
+		} catch (EntityNotFoundException e) {
+			logger.warning("Failed finding QuestionOption! " + e.getLocalizedMessage());
+		}
+
+		keys.add(question);
+	}
+
+	private void deleteQuestionOption(List<Key> keys, Key option) throws EntityNotFoundException {
+		Entity entity = mDataStore.get(option);
+		//noinspection unchecked
+		List<Key> items = (List<Key>) entity.getProperty("items");
+		items = firstNonNull(items, Collections.<Key>emptyList());
+
+		keys.addAll(items);
+		keys.add(option);
 	}
 }
