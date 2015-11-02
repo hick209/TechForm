@@ -14,6 +14,8 @@
 	<string name="action_uploadData">Enviar formulário</string>
 
 	<!-- Action -->
+	<string name="action_form_addPicture">Adicionar foto</string>
+	<string name="action_form_changePicture">Mudar foto</string>
 	<string name="action_form_fillUp">Preencher</string>
 	<string name="action_chooseUploadFile">Escolhe o arquivo JSON</string>
 
@@ -35,6 +37,7 @@
 
 	<!-- Message -->
 	<string name="message_noFileChooser">Primeiro instale um gerenciador de arquivos.</string>
+	<string name="message_noCameraApp">Nenhum app de câmera disponível.</string>
 	<string name="message_ioError">Erro, verifique sua conexão.</string>
 	<string name="message_badFileFormat">JSON não corresponde ao esperado.</string>
 	<string name="message_fileUploaded">Arquivo enviado com sucesso!</string>

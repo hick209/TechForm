@@ -1,6 +1,11 @@
 package finep.inovatec.section.question;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -10,15 +15,18 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
 import finep.inovatec.FormFillingManager;
+import finep.inovatec.R;
 import finep.inovatec.common.BaseFragment;
 import finep.inovatec.components.SimpleTextWatcher;
 import finep.inovatec.data.FillingFormSection;
 import finep.inovatec.data.FillingQuestion;
 import finep.inovatec.data.FillingQuestionOption;
+import finep.inovatec.databinding.ActivityFillingInfoBinding;
 import finep.inovatec.databinding.CellQuestionOptionMultipleBinding;
 import finep.inovatec.databinding.CellQuestionOptionSingleBinding;
 import finep.inovatec.databinding.FragmentQuestionBinding;
@@ -32,11 +40,14 @@ import info.nivaldobondanca.backend.techform.techFormAPI.model.FormQuestionOptio
 /**
  * @author Nivaldo Bondança
  */
-public class QuestionFragment extends BaseFragment {
+public class QuestionFragment extends BaseFragment implements QuestionViewModel.QuestionCallbacks {
 
 	private static final String ARG_FORM_POSITION     = "arg.FORM_POSITION";
 	private static final String ARG_SECTION_POSITION  = "arg.SECTION_POSITION";
 	private static final String ARG_QUESTION_POSITION = "arg.QUESTION_POSITION";
+
+	private static final int REQUEST_ATTACH_PICTURE = 0;
+
 
 	public static QuestionFragment instantiate(int formPosition, int sectionPosition, int questionPosition) {
 		Bundle args = new Bundle();
@@ -50,10 +61,6 @@ public class QuestionFragment extends BaseFragment {
 		return fragment;
 	}
 
-	private int mFormPosition;
-	private int mSectionPosition;
-	private int mQuestionPosition;
-
 	private QuestionViewModel mViewModel;
 	private FormQuestion      mQuestion;
 	private FillingQuestion   mQuestionFilling;
@@ -62,16 +69,26 @@ public class QuestionFragment extends BaseFragment {
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle args = getArguments();
-		mFormPosition = args.getInt(ARG_FORM_POSITION);
-		mSectionPosition = args.getInt(ARG_SECTION_POSITION);
-		mQuestionPosition = args.getInt(ARG_QUESTION_POSITION);
+		int formPosition = args.getInt(ARG_FORM_POSITION);
+		int sectionPosition = args.getInt(ARG_SECTION_POSITION);
+		int questionPosition = args.getInt(ARG_QUESTION_POSITION);
 
-		Form form = FormFillingManager.getInstance().getGroup().getForms().get(mFormPosition);
-		mQuestion = form.getSections().get(mSectionPosition).getQuestions().get(mQuestionPosition);
+		Form form = FormFillingManager.getInstance().getGroup().getForms().get(formPosition);
+		mQuestion = form.getSections().get(sectionPosition).getQuestions().get(questionPosition);
 
 		mQuestionFilling = getFormSection().getQuestion(mQuestion.getCodeName());
 
 		mViewModel = new QuestionViewModel(mQuestion);
+		mViewModel.setCallbacks(this);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_ATTACH_PICTURE && resultCode == Activity.RESULT_OK) {
+			Bundle extras = data.getExtras();
+			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			mViewModel.setPicture(new BitmapDrawable(getResources(), imageBitmap));
+		}
 	}
 
 	@Nullable
@@ -206,4 +223,14 @@ public class QuestionFragment extends BaseFragment {
 		return getBaseActivity().getFormSection();
 	}
 
+	@Override
+	public void onAttachPicture(FormQuestion question) {
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+			startActivityForResult(intent, REQUEST_ATTACH_PICTURE);
+		}
+		else {
+			Toast.makeText(getContext(), R.string.message_noCameraApp, Toast.LENGTH_SHORT).show();
+		}
+	}
 }

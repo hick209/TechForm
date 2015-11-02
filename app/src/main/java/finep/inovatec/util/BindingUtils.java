@@ -64,7 +64,12 @@ public class BindingUtils {
 	}
 
 	@BindingAdapter("iconEnd")
-	public static void setCompoundDrawable(TextView view, Drawable drawable) {
+	public static void setCompoundDrawableEnd(TextView view, Drawable drawable) {
 		view.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null);
+	}
+
+	@BindingAdapter("iconStart")
+	public static void setCompoundDrawableStart(TextView view, Drawable drawable) {
+		view.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null);
 	}
 }

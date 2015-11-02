@@ -80,7 +80,19 @@
 			</android.support.design.widget.TextInputLayout>
 
 			<!-- Add Photo -->
-			<!-- TODO -->
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="48dp"
+				android:text="@{viewModel.picture == null ? @string/action_form_addPicture : @string/action_form_changePicture}"
+				android:gravity="center_vertical"
+				android:drawablePadding="16dp"
+				android:background="?android:selectableItemBackground"
+				app:onClickListener="@{viewModel.attachPicture}"
+				app:iconStart="@{viewModel.picture ?? @drawable/ic_action_assignment}"
+				style="@style/TextAppearance.AppCompat.Subhead"
+				tools:text="@string/action_form_addPicture"
+				tools:drawableStart="@drawable/ic_action_assignment"/>
 		</LinearLayout>
 	</ScrollView>
 

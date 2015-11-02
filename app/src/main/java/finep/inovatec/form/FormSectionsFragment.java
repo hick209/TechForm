@@ -119,8 +119,10 @@ public class FormSectionsFragment extends BaseFragment implements AdapterView.On
 	}
 
 	private boolean isSectionComplete(FormSection section) {
-		FillingFormSection fillingSection = FormFillingManager.getInstance().getFilling().getForms()
-				.get(mFormPosition).getSection(section.getCodeName());
+		FormFillingManager manager = FormFillingManager.getInstance();
+		Form form = manager.getGroup().getForms().get(mFormPosition);
+		FillingFormSection fillingSection = manager.getFilling().getForm(form.getCodeName())
+				.getSection(section.getCodeName());
 
 		return Utils.isSectionComplete(section, fillingSection);
 	}
