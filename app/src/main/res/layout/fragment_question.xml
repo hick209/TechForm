@@ -89,10 +89,10 @@
 				android:drawablePadding="16dp"
 				android:background="?android:selectableItemBackground"
 				app:onClickListener="@{viewModel.attachPicture}"
-				app:iconStart="@{viewModel.picture ?? @drawable/ic_action_assignment}"
+				app:iconStart="@{viewModel.picture ?? @drawable/ic_image_photo_camera}"
 				style="@style/TextAppearance.AppCompat.Subhead"
 				tools:text="@string/action_form_addPicture"
-				tools:drawableStart="@drawable/ic_action_assignment"/>
+				tools:drawableStart="@drawable/ic_image_photo_camera"/>
 		</LinearLayout>
 	</ScrollView>
 
